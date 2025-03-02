@@ -9,6 +9,7 @@
     href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     .section-divider {
       height: 1px;
@@ -34,12 +35,139 @@
     .negative-value {
       color: #ea4335; /* Google red */
     }
+    
+    /* Add more rounded corners to input fields and adjust width */
+    input[type="number"] {
+      border-radius: 20px;
+      padding: 10px 16px;
+      width: 200px; /* Increased to 200px as requested */
+      max-width: 100%;
+      text-align: center; /* Center the text */
+      box-sizing: border-box;
+    }
+    
+    /* Ensure input group properly contains the input and suffix */
+    .input-group {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: fit-content;
+    }
+    
+    /* Style for the suffix to ensure it doesn't overlap with input text */
+    .input-group::after {
+      content: attr(data-suffix);
+      position: absolute;
+      right: 16px;
+      pointer-events: none;
+      color: var(--text-color);
+      white-space: nowrap; /* Prevent suffix from wrapping */
+      font-size: 14px; /* Slightly smaller font size for suffix */
+      background-color: white; /* Add background to ensure text doesn't show through */
+      padding-left: 8px; /* Add some padding to separate from input text */
+    }
+    
+    /* Add specific styling for each input based on its suffix length */
+    .input-group[data-suffix="€"] input,
+    .input-group[data-suffix="%"] input {
+      padding-right: 40px; /* Smaller padding for short units */
+    }
+    
+    .input-group[data-suffix="€/year"] input,
+    .input-group[data-suffix="€/month"] input,
+    .input-group[data-suffix="months"] input,
+    .input-group[data-suffix="years"] input {
+      padding-right: 80px; /* Larger padding for longer units */
+    }
+    
+    /* Remove up/down arrows (spinners) from number inputs */
+    /* Chrome, Safari, Edge, Opera */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    /* Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    
+    /* Style buttons with more rounded corners */
+    button {
+      border-radius: 24px;
+      padding: 12px 24px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    
+    button:hover {
+      transform: translateY(-1px);
+    }
+    
+    /* Make only the Net Result headers more prominent */
+    #buyingNetWorth, #rentingNetWorth {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    
+    /* Style for the Net Result labels */
+    .result-item:last-child .result-label:has(+ #buyingNetWorth),
+    .result-item:last-child .result-label:has(+ #rentingNetWorth) {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    
+    /* Style for the description section */
+    .description {
+      margin: 0 0 24px 0;
+      padding: 0 16px;
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .description p {
+      color: var(--text-color);
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+    }
+    
+    /* Chart styling */
+    .chart-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+      margin: 24px 0;
+      padding: 24px;
+    }
+    
+    .chart-container h3 {
+      color: var(--primary-color);
+      font-family: 'Google Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 0 16px 0;
+    }
+    
+    #netWorthChart {
+      height: 400px;
+      width: 100%;
+      margin: 0 auto;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <h1>Buy vs Rent Calculator</h1>
+    
+    <div class="description">
+      <p>Deciding whether to buy a home or continue renting is rarely straightforward. This calculator helps you compare the long-term financial outcomes of both options by considering multiple factors: property appreciation, mortgage terms, maintenance costs, investment returns, and more. Enter your specific details below to see which choice might be better for your financial future.</p>
+    </div>
 
     <div class="tabs">
       <div class="tab active" data-tab="inputs">Inputs</div>
@@ -344,6 +472,11 @@
         </div>
       </div>
 
+      <div class="chart-container">
+        <h3>Net Worth Over Time</h3>
+        <div id="netWorthChart"></div>
+      </div>
+
       <div class="button-container">
         <button id="backToInputsBtn">Back to Inputs</button>
       </div>
@@ -352,6 +485,131 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      console.log('DOM fully loaded');
+      
+      // Create chart with initial empty data
+      let netWorthChart;
+      
+      function initializeChart() {
+        console.log('Initializing chart');
+        const ctx = document.getElementById('netWorthChart');
+        if (!ctx) {
+          console.error('Chart canvas element not found');
+          return null;
+        }
+        
+        // Destroy existing chart if it exists
+        if (netWorthChart) {
+          netWorthChart.destroy();
+        }
+        
+        try {
+          netWorthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: [],
+              datasets: [
+                {
+                  label: 'Buying Net Worth',
+                  data: [],
+                  borderColor: '#34a853', // Google green
+                  backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                  tension: 0.3,
+                  fill: true
+                },
+                {
+                  label: 'Renting Net Worth',
+                  data: [],
+                  borderColor: '#4285f4', // Google blue
+                  backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                  tension: 0.3,
+                  fill: true
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      let label = context.dataset.label || '';
+                      if (label) {
+                        label += ': ';
+                      }
+                      if (context.parsed.y !== null) {
+                        label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed.y);
+                      }
+                      return label;
+                    }
+                  }
+                },
+                legend: {
+                  position: 'top',
+                  labels: {
+                    font: {
+                      family: 'Google Sans'
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Years',
+                    font: {
+                      family: 'Google Sans',
+                      size: 14
+                    }
+                  },
+                  ticks: {
+                    font: {
+                      family: 'Google Sans'
+                    }
+                  }
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'Net Worth (€)',
+                    font: {
+                      family: 'Google Sans',
+                      size: 14
+                    }
+                  },
+                  ticks: {
+                    callback: function(value) {
+                      return new Intl.NumberFormat('de-DE', { 
+                        style: 'currency', 
+                        currency: 'EUR',
+                        maximumFractionDigits: 0
+                      }).format(value);
+                    },
+                    font: {
+                      family: 'Google Sans'
+                    }
+                  }
+                }
+              }
+            }
+          });
+          console.log('Chart initialized successfully');
+          return netWorthChart;
+        } catch (error) {
+          console.error('Error initializing chart:', error);
+          return null;
+        }
+      }
+      
+      // Initialize chart on page load
+      try {
+        netWorthChart = initializeChart();
+      } catch (error) {
+        console.error('Error during chart initialization:', error);
+      }
+
       // Tab functionality
       const tabs = document.querySelectorAll('.tab');
       const tabContents = document.querySelectorAll('.tab-content');
@@ -359,6 +617,7 @@
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
           const tabId = tab.getAttribute('data-tab');
+          console.log('Tab clicked:', tabId);
 
           // Remove active class from all tabs and contents
           tabs.forEach(t => t.classList.remove('active'));
@@ -375,20 +634,86 @@
 
       // Calculate button functionality
       const calculateBtn = document.getElementById('calculateBtn');
-      calculateBtn.addEventListener('click', function () {
-        // Save values to localStorage before calculating
-        saveInputValues();
-        calculateComparison();
-      });
+      if (!calculateBtn) {
+        console.error('Calculate button not found');
+      } else {
+        console.log('Calculate button found, adding event listener');
+        calculateBtn.addEventListener('click', function(event) {
+          console.log('Calculate button clicked');
+          // Validate all inputs before proceeding
+          if (validateInputs()) {
+            console.log('Inputs validated successfully');
+            // Save values to localStorage before calculating
+            saveInputValues();
+            
+            try {
+              // Perform calculations
+              calculateComparison();
+              console.log('Calculation completed');
+              
+              // Switch to results tab
+              console.log('Switching to results tab');
+              tabs[1].click();
+            } catch (error) {
+              console.error('Error during calculation:', error);
+              alert('An error occurred during calculation. Please check the console for details.');
+            }
+          } else {
+            console.log('Input validation failed');
+          }
+        });
+      }
+
+      // Function to validate all inputs
+      function validateInputs() {
+        console.log('Validating inputs');
+        const inputFields = document.querySelectorAll('input[type="number"]');
+        let isValid = true;
+        let firstInvalidField = null;
+        
+        // Reset all input styles
+        inputFields.forEach(input => {
+          input.style.borderColor = '';
+        });
+        
+        // Check each input field
+        inputFields.forEach(input => {
+          // Check if empty or less than 0
+          if (input.value === '' || parseFloat(input.value) < 0) {
+            input.style.borderColor = '#ea4335'; // Google red for error
+            isValid = false;
+            
+            // Store the first invalid field for focus
+            if (!firstInvalidField) {
+              firstInvalidField = input;
+            }
+          }
+        });
+        
+        // If validation failed, focus on the first invalid field
+        if (!isValid && firstInvalidField) {
+          firstInvalidField.focus();
+          
+          // Show alert with error message
+          alert('Please ensure all fields are filled with values greater than or equal to 0.');
+        }
+        
+        return isValid;
+      }
 
       // Back button functionality
       const backToInputsBtn = document.getElementById('backToInputsBtn');
-      backToInputsBtn.addEventListener('click', () => {
-        tabs[0].click();
-      });
+      if (backToInputsBtn) {
+        backToInputsBtn.addEventListener('click', () => {
+          tabs[0].click();
+        });
+      } else {
+        console.error('Back to inputs button not found');
+      }
 
       // Function to save input values to localStorage
       function saveInputValues() {
+        console.log('Saving input values to localStorage');
         const inputFields = document.querySelectorAll('input[type="number"]');
         const savedValues = {};
 
@@ -401,6 +726,7 @@
 
       // Function to load saved values from localStorage
       function loadSavedValues() {
+        console.log('Loading saved values from localStorage');
         const savedData = localStorage.getItem('buyVsRentCalculator');
 
         if (savedData) {
@@ -447,6 +773,7 @@
 
       // Main calculation function
       function calculateComparison() {
+        console.log('Starting calculation');
         // Get input values
         const housePrice = parseFloat(document.getElementById('housePrice').value);
         const downPayment = parseFloat(document.getElementById('downPayment').value);
@@ -466,6 +793,8 @@
         const stayLength = parseInt(document.getElementById('stayLength').value);
         const investmentReturn = parseFloat(document.getElementById('investmentReturn').value);
         const inflation = parseFloat(document.getElementById('inflation').value);
+
+        console.log('Input values retrieved successfully');
 
         // Buying calculations
         const financedAmount = housePrice - downPayment;
@@ -529,35 +858,19 @@
           document.getElementById('rentingSavingsSection').style.display = 'none';
         }
 
-        // Calculate net worth for buying scenario
-        let buyingNetWorth = 0;
+        console.log('Calculating net worth');
+        // Calculate net worth for buying
+        const remainingMortgage = financedAmount - (Math.min(stayLengthMonths, mortgageLength) / mortgageLength) * financedAmount;
+        const buyingNetWorth = houseFutureValue - remainingMortgage - sellingCosts + (monthlySavings > 0 ? savingsValue : 0);
 
-        // Start with house future value
-        buyingNetWorth = houseFutureValue;
+        // Calculate net worth for renting
+        const rentingNetWorth = rentingInvestmentValue - totalRentPaid + totalRentDeposits + (monthlySavings < 0 ? savingsValue : 0);
 
-        // Add future value of monthly savings if buying is cheaper
-        if (monthlySavings > 0) {
-          buyingNetWorth += savingsValue;
-        }
+        // Calculate the difference
+        const netDifference = buyingNetWorth - rentingNetWorth;
 
-        // Subtract total housing expenditure
-        buyingNetWorth -= totalHousingExpenditure;
-
-        // Calculate net worth for renting scenario
-        let rentingNetWorth = rentingInvestmentValue; // Start with future value of initial investment
-
-        // Add future value of monthly savings if renting is cheaper
-        if (monthlySavings < 0) {
-          rentingNetWorth += savingsValue;
-        }
-
-        // Subtract total rent paid but add back security deposits
-        rentingNetWorth = rentingNetWorth - totalRentPaid + totalRentDeposits;
-
-        // The buyVsRentDifference should compare buying net worth with renting net worth
-        const buyVsRentDifference = buyingNetWorth - rentingNetWorth;
-
-        // Update results
+        console.log('Updating result values');
+        // Update result values
         document.getElementById('financedAmount').textContent = formatCurrency(financedAmount);
         document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
         document.getElementById('yearlyHousingExpenses').textContent = formatCurrency(yearlyHousingExpenses);
@@ -566,52 +879,116 @@
         document.getElementById('totalHousingExpenses').textContent = formatCurrency(totalHousingExpenses);
         document.getElementById('houseFutureValue').textContent = formatCurrency(houseFutureValue);
         document.getElementById('totalHousingExpenditure').textContent = formatCurrency(totalHousingExpenditure);
-        document.getElementById('buyingNetWorth').textContent = formatCurrency(buyingNetWorth);
-
         document.getElementById('initialRent').textContent = formatCurrency(rentPayment);
         document.getElementById('totalRentDeposits').textContent = formatCurrency(totalRentDeposits);
         document.getElementById('finalRent').textContent = formatCurrency(finalRent);
         document.getElementById('totalRentPaid').textContent = formatCurrency(totalRentPaid);
-
         document.getElementById('rentingInvestmentValue').textContent = formatCurrency(rentingInvestmentValue);
-        document.getElementById('rentingNetWorth').textContent = formatCurrency(rentingNetWorth);
 
-        // Update net result values with color classes
+        // Update net worth values with color coding
         const buyingNetWorthElement = document.getElementById('buyingNetWorth');
-        const rentingNetWorthElement = document.getElementById('rentingNetWorth');
-        
         buyingNetWorthElement.textContent = formatCurrency(buyingNetWorth);
+        buyingNetWorthElement.className = buyingNetWorth >= 0 ? 'result-value positive-value' : 'result-value negative-value';
+
+        const rentingNetWorthElement = document.getElementById('rentingNetWorth');
         rentingNetWorthElement.textContent = formatCurrency(rentingNetWorth);
-        
-        // Add color classes based on positive/negative values
-        if (buyingNetWorth >= 0) {
-          buyingNetWorthElement.className = 'result-value positive-value';
+        rentingNetWorthElement.className = rentingNetWorth >= 0 ? 'result-value positive-value' : 'result-value negative-value';
+
+        // Update comparison result
+        const comparisonResultElement = document.getElementById('comparisonResult');
+        if (netDifference > 0) {
+          comparisonResultElement.textContent = `Buying is better by ${formatCurrency(netDifference)}`;
+          comparisonResultElement.className = 'comparison-value positive-value';
+        } else if (netDifference < 0) {
+          comparisonResultElement.textContent = `Renting is better by ${formatCurrency(Math.abs(netDifference))}`;
+          comparisonResultElement.className = 'comparison-value negative-value';
         } else {
-          buyingNetWorthElement.className = 'result-value negative-value';
-        }
-        
-        if (rentingNetWorth >= 0) {
-          rentingNetWorthElement.className = 'result-value positive-value';
-        } else {
-          rentingNetWorthElement.className = 'result-value negative-value';
-        }
-        
-        // Update comparison result with color
-        const comparisonResult = document.getElementById('comparisonResult');
-        const comparisonText = document.getElementById('comparisonText');
-        
-        if (buyVsRentDifference > 0) {
-          comparisonResult.textContent = `Buying is better by ${formatCurrency(buyVsRentDifference)}`;
-          comparisonResult.className = 'comparison-value positive-value';
-          comparisonText.textContent = `After ${stayLength} years, buying this property would leave you financially better off compared to renting, considering all costs and the potential appreciation of the property.`;
-        } else {
-          comparisonResult.textContent = `Renting is better by ${formatCurrency(Math.abs(buyVsRentDifference))}`;
-          comparisonResult.className = 'comparison-value positive-value';
-          comparisonText.textContent = `After ${stayLength} years, renting would leave you financially better off compared to buying, considering all costs and the potential investment returns from the money not tied up in property.`;
+          comparisonResultElement.textContent = 'Buying and renting are financially equivalent';
+          comparisonResultElement.className = 'comparison-value';
         }
 
-        // Switch to results tab
-        tabs[1].click();
+        // Update comparison text
+        const comparisonTextElement = document.getElementById('comparisonText');
+        if (netDifference > 0) {
+          comparisonTextElement.textContent = `After ${stayLength} years, buying this property would leave you financially better off compared to renting, considering all costs and the potential appreciation of the property.`;
+        } else if (netDifference < 0) {
+          comparisonTextElement.textContent = `After ${stayLength} years, renting would leave you financially better off compared to buying this property, considering all costs and the potential investment returns.`;
+        } else {
+          comparisonTextElement.textContent = `After ${stayLength} years, buying and renting would result in the same financial outcome, considering all costs and potential returns.`;
+        }
+
+        console.log('Calculating chart data');
+        // Calculate net worth over time for the chart
+        const years = Array.from({length: stayLength + 1}, (_, i) => i);
+        const buyingNetWorthData = [];
+        const rentingNetWorthData = [];
+        
+        // Calculate net worth for each year
+        for (let year = 0; year <= stayLength; year++) {
+          // For year 0, we just have the initial costs
+          if (year === 0) {
+            buyingNetWorthData.push(-downPayment - buyingCosts);
+            rentingNetWorthData.push(-rentPayment * rentDeposits); // Initial deposits
+            continue;
+          }
+          
+          // Calculate house value at this year
+          const houseValueAtYear = calculateFutureValue(housePrice, appreciationRate, year);
+          
+          // Calculate mortgage paid up to this year
+          const mortgagePaidAtYear = Math.min(year * 12, mortgageLength) * monthlyPayment;
+          
+          // Calculate housing expenses up to this year with inflation
+          const housingExpensesAtYear = calculateFutureValueAnnuity(yearlyHousingExpenses, inflation, year);
+          
+          // Calculate selling costs at this year
+          const sellingCostsAtYear = houseValueAtYear * (sellingCostsRate / 100);
+          
+          // Calculate buying net worth at this year
+          let buyingNetWorthAtYear = houseValueAtYear - (downPayment + buyingCosts + mortgagePaidAtYear + housingExpensesAtYear + sellingCostsAtYear);
+          
+          // Calculate rent paid up to this year with increases
+          const rentPaidAtYear = calculateFutureValueAnnuity(rentPayment * 12, rentIncreaseRate, year);
+          
+          // Calculate investment value at this year
+          const investmentValueAtYear = calculateFutureValue(initialInvestment, investmentReturn, year);
+          
+          // Calculate renting net worth at this year
+          let rentingNetWorthAtYear = investmentValueAtYear - rentPaidAtYear + totalRentDeposits;
+          
+          // Calculate monthly savings for each scenario
+          if (monthlySavings > 0) { // Buying is cheaper monthly
+            const savingsValueAtYear = calculateFutureValueAnnuity(monthlySavings * 12, investmentReturn, year);
+            buyingNetWorthAtYear += savingsValueAtYear;
+          } else if (monthlySavings < 0) { // Renting is cheaper monthly
+            const savingsValueAtYear = calculateFutureValueAnnuity(Math.abs(monthlySavings) * 12, investmentReturn, year);
+            rentingNetWorthAtYear += savingsValueAtYear;
+          }
+          
+          buyingNetWorthData.push(buyingNetWorthAtYear);
+          rentingNetWorthData.push(rentingNetWorthAtYear);
+        }
+        
+        console.log('Updating chart');
+        // Update the chart
+        try {
+          if (!netWorthChart) {
+            console.log('Chart not initialized, creating new chart');
+            netWorthChart = initializeChart();
+          }
+          
+          if (netWorthChart) {
+            netWorthChart.data.labels = years;
+            netWorthChart.data.datasets[0].data = buyingNetWorthData;
+            netWorthChart.data.datasets[1].data = rentingNetWorthData;
+            netWorthChart.update();
+            console.log('Chart updated successfully');
+          } else {
+            console.error('Chart object is null, cannot update');
+          }
+        } catch (error) {
+          console.error('Error updating chart:', error);
+        }
       }
     });
   </script>
