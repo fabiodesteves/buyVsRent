@@ -221,8 +221,25 @@
                         <div class="result-value" id="totalHousingExpenditure">€263,760</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Net Worth After Stay Period</div>
+                        <div class="result-label">Net Result After Stay Period</div>
                         <div class="result-value" id="buyingNetWorth">€0</div>
+                    </div>
+                </div>
+                <!-- Monthly savings section for buying (will be shown/hidden via JS) -->
+                <div id="buyingSavingsSection" style="display: none;">
+                    <div class="section-divider"></div>
+                    <div class="section-header">
+                        <h4>Monthly Savings from Buying</h4>
+                    </div>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">Monthly Savings (Rent - Buying)</div>
+                            <div class="result-value" id="buyingMonthlySavings">€0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Future Value of Monthly Savings</div>
+                            <div class="result-value" id="buyingSavingsFutureValue">€0</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -248,25 +265,30 @@
                         <div class="result-label">Total Rent Paid</div>
                         <div class="result-value" id="totalRentPaid">€159,159</div>
                     </div>
-                </div>
-            </div>
-
-            <div class="result-card">
-                <div class="result-header">
-                    <h3>Monthly Savings Comparison</h3>
-                </div>
-                <div class="result-grid">
                     <div class="result-item">
-                        <div class="result-label">Monthly Difference (Rent - Buying)</div>
-                        <div class="result-value" id="monthlySavingsDifference">€0</div>
+                        <div class="result-label">Future Value of Initial Investment</div>
+                        <div class="result-value" id="rentingInvestmentValue">€0</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">Savings Source</div>
-                        <div class="result-value" id="savingsSource">Equal monthly costs</div>
+                        <div class="result-label">Net Result After Stay Period</div>
+                        <div class="result-value" id="rentingNetWorth">€0</div>
                     </div>
-                    <div class="result-item">
-                        <div class="result-label">Future Value of Monthly Savings</div>
-                        <div class="result-value" id="futureSavingsValue">€0</div>
+                </div>
+                <!-- Monthly savings section for renting (will be shown/hidden via JS) -->
+                <div id="rentingSavingsSection" style="display: none;">
+                    <div class="section-divider"></div>
+                    <div class="section-header">
+                        <h4>Monthly Savings from Renting</h4>
+                    </div>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">Monthly Savings (Buying - Rent)</div>
+                            <div class="result-value" id="rentingMonthlySavings">€0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Future Value of Monthly Savings</div>
+                            <div class="result-value" id="rentingSavingsFutureValue">€0</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -306,15 +328,51 @@
                 });
             });
 
+            // Load saved values from localStorage
+            loadSavedValues();
+
             // Calculate button functionality
             const calculateBtn = document.getElementById('calculateBtn');
-            calculateBtn.addEventListener('click', calculateComparison);
+            calculateBtn.addEventListener('click', function() {
+                // Save values to localStorage before calculating
+                saveInputValues();
+                calculateComparison();
+            });
 
             // Back button functionality
             const backToInputsBtn = document.getElementById('backToInputsBtn');
             backToInputsBtn.addEventListener('click', () => {
                 tabs[0].click();
             });
+
+            // Function to save input values to localStorage
+            function saveInputValues() {
+                const inputFields = document.querySelectorAll('input[type="number"]');
+                const savedValues = {};
+                
+                inputFields.forEach(input => {
+                    savedValues[input.id] = input.value;
+                });
+                
+                localStorage.setItem('buyVsRentCalculator', JSON.stringify(savedValues));
+            }
+
+            // Function to load saved values from localStorage
+            function loadSavedValues() {
+                const savedData = localStorage.getItem('buyVsRentCalculator');
+                
+                if (savedData) {
+                    const savedValues = JSON.parse(savedData);
+                    
+                    // Apply saved values to input fields
+                    Object.keys(savedValues).forEach(id => {
+                        const inputField = document.getElementById(id);
+                        if (inputField) {
+                            inputField.value = savedValues[id];
+                        }
+                    });
+                }
+            }
 
             // Format currency function
             function formatCurrency(value) {
@@ -393,21 +451,40 @@
                 const finalRent = calculateFutureValue(rentPayment, rentIncreaseRate, stayLength);
                 const totalRentPaid = calculateFutureValueAnnuity(rentPayment * 12, rentIncreaseRate, stayLength);
                 
+                // Calculate future value of initial investment (down payment + buying costs)
+                const initialInvestment = downPayment + buyingCosts;
+                const rentingInvestmentValue = calculateFutureValue(initialInvestment, investmentReturn, stayLength);
+                
                 // Compare monthly expenses
                 const monthlySavings = rentPayment - totalMonthlyHousingExpenses;
                 let savingsValue = 0;
-                let savingsSource = '';
                 
                 if (monthlySavings > 0) {
-                    // Renting is more expensive monthly
+                    // Renting is more expensive monthly, buying is cheaper
                     savingsValue = calculateFutureValueAnnuity(monthlySavings * 12, investmentReturn, stayLength);
-                    savingsSource = 'Buying is cheaper monthly';
+                    
+                    // Show buying savings section, hide renting savings section
+                    document.getElementById('buyingSavingsSection').style.display = 'block';
+                    document.getElementById('rentingSavingsSection').style.display = 'none';
+                    
+                    // Update buying savings values
+                    document.getElementById('buyingMonthlySavings').textContent = formatCurrency(monthlySavings);
+                    document.getElementById('buyingSavingsFutureValue').textContent = formatCurrency(savingsValue);
                 } else if (monthlySavings < 0) {
-                    // Buying is more expensive monthly
+                    // Buying is more expensive monthly, renting is cheaper
                     savingsValue = calculateFutureValueAnnuity(Math.abs(monthlySavings) * 12, investmentReturn, stayLength);
-                    savingsSource = 'Renting is cheaper monthly';
+                    
+                    // Show renting savings section, hide buying savings section
+                    document.getElementById('rentingSavingsSection').style.display = 'block';
+                    document.getElementById('buyingSavingsSection').style.display = 'none';
+                    
+                    // Update renting savings values
+                    document.getElementById('rentingMonthlySavings').textContent = formatCurrency(Math.abs(monthlySavings));
+                    document.getElementById('rentingSavingsFutureValue').textContent = formatCurrency(savingsValue);
                 } else {
-                    savingsSource = 'Equal monthly costs';
+                    // Equal monthly costs
+                    document.getElementById('buyingSavingsSection').style.display = 'none';
+                    document.getElementById('rentingSavingsSection').style.display = 'none';
                 }
                 
                 // Calculate net worth for buying scenario
@@ -421,12 +498,21 @@
                     buyingNetWorth += savingsValue;
                 }
 
-                // Subtract total housing expenditure (which already includes down payment, buying costs, 
-                // mortgage payments, maintenance, and selling costs)
+                // Subtract total housing expenditure
                 buyingNetWorth -= totalHousingExpenditure;
 
+                // Calculate net worth for renting scenario
+                let rentingNetWorth = rentingInvestmentValue; // Start with future value of initial investment
+
+                // Add future value of monthly savings if renting is cheaper
+                if (monthlySavings < 0) {
+                    rentingNetWorth += savingsValue;
+                }
+
+                // Subtract total rent paid but add back security deposits
+                rentingNetWorth = rentingNetWorth - totalRentPaid + totalRentDeposits;
+
                 // The buyVsRentDifference should compare buying net worth with renting net worth
-                const rentingNetWorth = (downPayment + buyingCosts) * Math.pow(1 + investmentReturn / 100, stayLength) - totalRentPaid + totalRentDeposits;
                 const buyVsRentDifference = buyingNetWorth - rentingNetWorth;
                 
                 // Update results
@@ -445,6 +531,9 @@
                 document.getElementById('finalRent').textContent = formatCurrency(finalRent);
                 document.getElementById('totalRentPaid').textContent = formatCurrency(totalRentPaid);
                 
+                document.getElementById('rentingInvestmentValue').textContent = formatCurrency(rentingInvestmentValue);
+                document.getElementById('rentingNetWorth').textContent = formatCurrency(rentingNetWorth);
+                
                 // Update comparison result
                 const comparisonResult = document.getElementById('comparisonResult');
                 const comparisonText = document.getElementById('comparisonText');
@@ -456,14 +545,6 @@
                     comparisonResult.textContent = `Renting is better by ${formatCurrency(Math.abs(buyVsRentDifference))}`;
                     comparisonText.textContent = `After ${stayLength} years, renting would leave you financially better off compared to buying, considering all costs and the potential investment returns from the money not tied up in property.`;
                 }
-                
-                // Update monthly savings comparison
-                const monthlySavingsDifference = rentPayment - totalMonthlyHousingExpenses;
-                const futureSavingsValue = calculateFutureValueAnnuity(Math.abs(monthlySavings) * 12, investmentReturn, stayLength);
-                
-                document.getElementById('monthlySavingsDifference').textContent = formatCurrency(monthlySavingsDifference);
-                document.getElementById('savingsSource').textContent = savingsSource;
-                document.getElementById('futureSavingsValue').textContent = formatCurrency(futureSavingsValue);
                 
                 // Switch to results tab
                 tabs[1].click();
