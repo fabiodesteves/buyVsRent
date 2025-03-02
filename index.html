@@ -710,7 +710,11 @@
         console.log('Calculating net worth');
         // Calculate net worth for buying
         const remainingMortgage = financedAmount - (Math.min(stayLengthMonths, mortgageLength) / mortgageLength) * financedAmount;
-        const buyingNetWorth = houseFutureValue - remainingMortgage - sellingCosts + (monthlySavings > 0 ? savingsValue : 0);
+        
+        // Revised buyingNetWorth calculation that properly accounts for all expenditures
+        // The net worth is: Asset value (house) - Liabilities (remaining mortgage) - Transaction costs (selling) - Initial investment (down payment + buying costs)
+        // We don't subtract mortgage payments and housing expenses again as they've already been paid and reflected in the remaining equity
+        const buyingNetWorth = houseFutureValue - totalHousingExpenditure + (monthlySavings > 0 ? savingsValue : 0);
 
         // Calculate net worth for renting
         const rentingNetWorth = rentingInvestmentValue - totalRentPaid + totalRentDeposits + (monthlySavings < 0 ? savingsValue : 0);
