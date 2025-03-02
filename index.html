@@ -135,29 +135,6 @@
       line-height: 1.5;
       margin: 0;
     }
-    
-    /* Chart styling */
-    .chart-container {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-      margin: 24px 0;
-      padding: 24px;
-    }
-    
-    .chart-container h3 {
-      color: var(--primary-color);
-      font-family: 'Google Sans', sans-serif;
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 0 16px 0;
-    }
-    
-    #netWorthChart {
-      height: 400px;
-      width: 100%;
-      margin: 0 auto;
-    }
   </style>
 </head>
 
@@ -472,11 +449,6 @@
         </div>
       </div>
 
-      <div class="chart-container">
-        <h3>Net Worth Over Time</h3>
-        <div id="netWorthChart"></div>
-      </div>
-
       <div class="button-container">
         <button id="backToInputsBtn">Back to Inputs</button>
       </div>
@@ -487,129 +459,6 @@
     document.addEventListener('DOMContentLoaded', function () {
       console.log('DOM fully loaded');
       
-      // Create chart with initial empty data
-      let netWorthChart;
-      
-      function initializeChart() {
-        console.log('Initializing chart');
-        const ctx = document.getElementById('netWorthChart');
-        if (!ctx) {
-          console.error('Chart canvas element not found');
-          return null;
-        }
-        
-        // Destroy existing chart if it exists
-        if (netWorthChart) {
-          netWorthChart.destroy();
-        }
-        
-        try {
-          netWorthChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: [],
-              datasets: [
-                {
-                  label: 'Buying Net Worth',
-                  data: [],
-                  borderColor: '#34a853', // Google green
-                  backgroundColor: 'rgba(52, 168, 83, 0.1)',
-                  tension: 0.3,
-                  fill: true
-                },
-                {
-                  label: 'Renting Net Worth',
-                  data: [],
-                  borderColor: '#4285f4', // Google blue
-                  backgroundColor: 'rgba(66, 133, 244, 0.1)',
-                  tension: 0.3,
-                  fill: true
-                }
-              ]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                tooltip: {
-                  callbacks: {
-                    label: function(context) {
-                      let label = context.dataset.label || '';
-                      if (label) {
-                        label += ': ';
-                      }
-                      if (context.parsed.y !== null) {
-                        label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed.y);
-                      }
-                      return label;
-                    }
-                  }
-                },
-                legend: {
-                  position: 'top',
-                  labels: {
-                    font: {
-                      family: 'Google Sans'
-                    }
-                  }
-                }
-              },
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: 'Years',
-                    font: {
-                      family: 'Google Sans',
-                      size: 14
-                    }
-                  },
-                  ticks: {
-                    font: {
-                      family: 'Google Sans'
-                    }
-                  }
-                },
-                y: {
-                  title: {
-                    display: true,
-                    text: 'Net Worth (€)',
-                    font: {
-                      family: 'Google Sans',
-                      size: 14
-                    }
-                  },
-                  ticks: {
-                    callback: function(value) {
-                      return new Intl.NumberFormat('de-DE', { 
-                        style: 'currency', 
-                        currency: 'EUR',
-                        maximumFractionDigits: 0
-                      }).format(value);
-                    },
-                    font: {
-                      family: 'Google Sans'
-                    }
-                  }
-                }
-              }
-            }
-          });
-          console.log('Chart initialized successfully');
-          return netWorthChart;
-        } catch (error) {
-          console.error('Error initializing chart:', error);
-          return null;
-        }
-      }
-      
-      // Initialize chart on page load
-      try {
-        netWorthChart = initializeChart();
-      } catch (error) {
-        console.error('Error during chart initialization:', error);
-      }
-
       // Tab functionality
       const tabs = document.querySelectorAll('.tab');
       const tabContents = document.querySelectorAll('.tab-content');
@@ -915,79 +764,6 @@
           comparisonTextElement.textContent = `After ${stayLength} years, renting would leave you financially better off compared to buying this property, considering all costs and the potential investment returns.`;
         } else {
           comparisonTextElement.textContent = `After ${stayLength} years, buying and renting would result in the same financial outcome, considering all costs and potential returns.`;
-        }
-
-        console.log('Calculating chart data');
-        // Calculate net worth over time for the chart
-        const years = Array.from({length: stayLength + 1}, (_, i) => i);
-        const buyingNetWorthData = [];
-        const rentingNetWorthData = [];
-        
-        // Calculate net worth for each year
-        for (let year = 0; year <= stayLength; year++) {
-          // For year 0, we just have the initial costs
-          if (year === 0) {
-            buyingNetWorthData.push(-downPayment - buyingCosts);
-            rentingNetWorthData.push(-rentPayment * rentDeposits); // Initial deposits
-            continue;
-          }
-          
-          // Calculate house value at this year
-          const houseValueAtYear = calculateFutureValue(housePrice, appreciationRate, year);
-          
-          // Calculate mortgage paid up to this year
-          const mortgagePaidAtYear = Math.min(year * 12, mortgageLength) * monthlyPayment;
-          
-          // Calculate housing expenses up to this year with inflation
-          const housingExpensesAtYear = calculateFutureValueAnnuity(yearlyHousingExpenses, inflation, year);
-          
-          // Calculate selling costs at this year
-          const sellingCostsAtYear = houseValueAtYear * (sellingCostsRate / 100);
-          
-          // Calculate buying net worth at this year
-          let buyingNetWorthAtYear = houseValueAtYear - (downPayment + buyingCosts + mortgagePaidAtYear + housingExpensesAtYear + sellingCostsAtYear);
-          
-          // Calculate rent paid up to this year with increases
-          const rentPaidAtYear = calculateFutureValueAnnuity(rentPayment * 12, rentIncreaseRate, year);
-          
-          // Calculate investment value at this year
-          const investmentValueAtYear = calculateFutureValue(initialInvestment, investmentReturn, year);
-          
-          // Calculate renting net worth at this year
-          let rentingNetWorthAtYear = investmentValueAtYear - rentPaidAtYear + totalRentDeposits;
-          
-          // Calculate monthly savings for each scenario
-          if (monthlySavings > 0) { // Buying is cheaper monthly
-            const savingsValueAtYear = calculateFutureValueAnnuity(monthlySavings * 12, investmentReturn, year);
-            buyingNetWorthAtYear += savingsValueAtYear;
-          } else if (monthlySavings < 0) { // Renting is cheaper monthly
-            const savingsValueAtYear = calculateFutureValueAnnuity(Math.abs(monthlySavings) * 12, investmentReturn, year);
-            rentingNetWorthAtYear += savingsValueAtYear;
-          }
-          
-          buyingNetWorthData.push(buyingNetWorthAtYear);
-          rentingNetWorthData.push(rentingNetWorthAtYear);
-        }
-        
-        console.log('Updating chart');
-        // Update the chart
-        try {
-          if (!netWorthChart) {
-            console.log('Chart not initialized, creating new chart');
-            netWorthChart = initializeChart();
-          }
-          
-          if (netWorthChart) {
-            netWorthChart.data.labels = years;
-            netWorthChart.data.datasets[0].data = buyingNetWorthData;
-            netWorthChart.data.datasets[1].data = rentingNetWorthData;
-            netWorthChart.update();
-            console.log('Chart updated successfully');
-          } else {
-            console.error('Chart object is null, cannot update');
-          }
-        } catch (error) {
-          console.error('Error updating chart:', error);
         }
       }
     });
