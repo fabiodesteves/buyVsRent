@@ -295,3 +295,129 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* Styles from the HTML file */
+.section-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 24px 0 16px 0;
+}
+
+.section-header {
+  margin-bottom: 16px;
+}
+
+.section-header h4 {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.positive-value {
+  color: #34a853; /* Google green */
+}
+
+.negative-value {
+  color: #ea4335; /* Google red */
+}
+
+/* Add more rounded corners to input fields and adjust width */
+input[type="number"] {
+  border-radius: 20px;
+  padding: 10px 16px;
+  width: 200px; /* Increased to 200px as requested */
+  max-width: 100%;
+  text-align: center; /* Center the text */
+  box-sizing: border-box;
+}
+
+/* Ensure input group properly contains the input and suffix */
+.input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+}
+
+/* Style for the suffix to ensure it doesn't overlap with input text */
+.input-group::after {
+  content: attr(data-suffix);
+  position: absolute;
+  right: 16px;
+  pointer-events: none;
+  color: var(--text-color);
+  white-space: nowrap; /* Prevent suffix from wrapping */
+  font-size: 14px; /* Slightly smaller font size for suffix */
+  background-color: white; /* Add background to ensure text doesn't show through */
+  padding-left: 8px; /* Add some padding to separate from input text */
+}
+
+/* Add specific styling for each input based on its suffix length */
+.input-group[data-suffix="€"] input,
+.input-group[data-suffix="%"] input {
+  padding-right: 40px; /* Smaller padding for short units */
+}
+
+.input-group[data-suffix="€/year"] input,
+.input-group[data-suffix="€/month"] input,
+.input-group[data-suffix="months"] input,
+.input-group[data-suffix="years"] input {
+  padding-right: 80px; /* Larger padding for longer units */
+}
+
+/* Remove up/down arrows (spinners) from number inputs */
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Style buttons with more rounded corners */
+button {
+  border-radius: 24px;
+  padding: 12px 24px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Make only the Net Result headers more prominent */
+#buyingNetWorth, #rentingNetWorth {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Style for the Net Result labels */
+.result-item:last-child .result-label:has(+ #buyingNetWorth),
+.result-item:last-child .result-label:has(+ #rentingNetWorth) {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* Style for the description section */
+.description {
+  margin: 0 0 24px 0;
+  padding: 0 16px;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description p {
+  color: var(--text-color);
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
