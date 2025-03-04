@@ -242,35 +242,67 @@
         </div>
         <div class="result-grid">
           <div class="result-item">
-            <div class="result-label">Financed Amount</div>
+            <div class="result-label">Financed Amount
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The amount borrowed from the lender. Calculated as the house price minus your down payment.</span>
+              </span>
+            </div>
             <div class="result-value" id="financedAmount">€240,000</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Monthly Mortgage Payment</div>
+            <div class="result-label">Monthly Mortgage Payment
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Your regular monthly payment to the lender. Calculated based on the financed amount, interest rate, and mortgage length.</span>
+              </span>
+            </div>
             <div class="result-value" id="monthlyPayment">€1,078</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Annual Housing Expenses</div>
+            <div class="result-label">Annual Housing Expenses
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Yearly costs beyond the mortgage payment. Includes maintenance, insurance, property taxes, and administration fees.</span>
+              </span>
+            </div>
             <div class="result-value" id="yearlyHousingExpenses">€5,400</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Total Monthly Housing Expenses</div>
+            <div class="result-label">Total Monthly Housing Expenses
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The complete monthly cost of homeownership. Combines the mortgage payment with a monthly portion of the annual housing expenses.</span>
+              </span>
+            </div>
             <div class="result-value" id="totalMonthlyHousingExpenses">€1,528</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Total Mortgage Paid</div>
+            <div class="result-label">Total Mortgage Paid
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The total amount paid toward the mortgage during your stay. Calculated as the monthly payment multiplied by the number of months (limited by mortgage length).</span>
+              </span>
+            </div>
             <div class="result-value" id="totalMortgagePaid">€129,360</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Total Housing Expenses</div>
+            <div class="result-label">Total Housing Expenses
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The sum of all non-mortgage housing costs over your stay period, adjusted for inflation.</span>
+              </span>
+            </div>
             <div class="result-value" id="totalHousingExpenses">€59,400</div>
           </div>
           <div class="result-item">
-            <div class="result-label">House Future Value</div>
+            <div class="result-label">House Future Value
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The estimated value of your property at the end of your stay. Calculated using the home appreciation rate over the stay period.</span>
+              </span>
+            </div>
             <div class="result-value" id="houseFutureValue">€488,668</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Total Housing Expenditure</div>
+            <div class="result-label">Total Housing Expenditure
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The total amount spent on housing during your stay. Includes down payment, buying costs, mortgage payments, housing expenses, and selling costs.</span>
+              </span>
+            </div>
             <div class="result-value" id="totalHousingExpenditure">€263,760</div>
           </div>
         </div>
@@ -283,11 +315,19 @@
           </div>
           <div class="result-grid">
             <div class="result-item">
-              <div class="result-label">Monthly Savings (Rent - Buying)</div>
+              <div class="result-label">Monthly Savings (Rent - Buying)
+                <span class="tooltip">ⓘ
+                  <span class="tooltip-text">The monthly amount saved by buying instead of renting. Calculated as the difference between monthly rent and total monthly housing expenses.</span>
+                </span>
+              </div>
               <div class="result-value" id="buyingMonthlySavings">€0</div>
             </div>
             <div class="result-item">
-              <div class="result-label">Future Value of Monthly Savings</div>
+              <div class="result-label">Future Value of Monthly Savings
+                <span class="tooltip">ⓘ
+                  <span class="tooltip-text">The potential value of your monthly savings if invested at the specified investment return rate over your stay period.</span>
+                </span>
+              </div>
               <div class="result-value" id="buyingSavingsFutureValue">€0</div>
             </div>
           </div>
@@ -297,7 +337,11 @@
         <div class="section-divider"></div>
         <div class="result-grid">
           <div class="result-item">
-            <div class="result-label">Net Result After Stay Period</div>
+            <div class="result-label">Net Result After Stay Period
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Your financial position at the end of your stay if you buy. Includes the house value minus remaining mortgage, selling costs, initial investment, plus any investment returns from monthly savings.</span>
+              </span>
+            </div>
             <div class="result-value" id="buyingNetWorth">€0</div>
           </div>
         </div>
@@ -309,23 +353,43 @@
         </div>
         <div class="result-grid">
           <div class="result-item">
-            <div class="result-label">Initial Monthly Rent</div>
+            <div class="result-label">Initial Monthly Rent
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The starting monthly rent payment for a comparable property.</span>
+              </span>
+            </div>
             <div class="result-value" id="initialRent">€1,200</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Total Rent Deposits</div>
+            <div class="result-label">Total Rent Deposits
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The security deposit paid at the beginning of your rental. Calculated as the initial monthly rent multiplied by the number of deposits.</span>
+              </span>
+            </div>
             <div class="result-value" id="totalRentDeposits">€2,400</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Final Monthly Rent</div>
+            <div class="result-label">Final Monthly Rent
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The estimated monthly rent at the end of your stay period. Calculated using the rent increase rate over the stay period.</span>
+              </span>
+            </div>
             <div class="result-value" id="finalRent">€1,463</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Total Rent Paid</div>
+            <div class="result-label">Total Rent Paid
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The total amount paid in rent over your stay period, accounting for annual rent increases.</span>
+              </span>
+            </div>
             <div class="result-value" id="totalRentPaid">€159,159</div>
           </div>
           <div class="result-item">
-            <div class="result-label">Future Value of Initial Investment</div>
+            <div class="result-label">Future Value of Initial Investment
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The potential value of the down payment and buying costs if invested in the market instead of buying property. Calculated using the investment return rate over the stay period.</span>
+              </span>
+            </div>
             <div class="result-value" id="rentingInvestmentValue">€0</div>
           </div>
         </div>
@@ -338,11 +402,19 @@
           </div>
           <div class="result-grid">
             <div class="result-item">
-              <div class="result-label">Monthly Savings (Buying - Rent)</div>
+              <div class="result-label">Monthly Savings (Buying - Rent)
+                <span class="tooltip">ⓘ
+                  <span class="tooltip-text">The monthly amount saved by renting instead of buying. Calculated as the difference between total monthly housing expenses and monthly rent.</span>
+                </span>
+              </div>
               <div class="result-value" id="rentingMonthlySavings">€0</div>
             </div>
             <div class="result-item">
-              <div class="result-label">Future Value of Monthly Savings</div>
+              <div class="result-label">Future Value of Monthly Savings
+                <span class="tooltip">ⓘ
+                  <span class="tooltip-text">The potential value of your monthly savings if invested at the specified investment return rate over your stay period.</span>
+                </span>
+              </div>
               <div class="result-value" id="rentingSavingsFutureValue">€0</div>
             </div>
           </div>
@@ -352,14 +424,22 @@
         <div class="section-divider"></div>
         <div class="result-grid">
           <div class="result-item">
-            <div class="result-label">Net Result After Stay Period</div>
+            <div class="result-label">Net Result After Stay Period
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Your financial position at the end of your stay if you rent. Includes the future value of your initial investment, minus total rent paid, plus security deposits returned, and any investment returns from monthly savings.</span>
+              </span>
+            </div>
             <div class="result-value" id="rentingNetWorth">€0</div>
           </div>
         </div>
       </div>
 
       <div class="comparison-result">
-        <h3>Buy vs Rent Comparison</h3>
+        <h3>Buy vs Rent Comparison
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">The final comparison between buying and renting based on the net financial outcome after your stay period.</span>
+          </span>
+        </h3>
         <div class="comparison-value" id="comparisonResult">Buying is better by €65,749</div>
         <div class="comparison-text" id="comparisonText">
           After 10 years, buying this property would leave you financially better off compared to renting,
