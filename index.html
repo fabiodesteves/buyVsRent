@@ -46,7 +46,7 @@
           <div class="form-group">
             <label for="interestRate">Interest Rate
               <span class="tooltip">ⓘ
-                <span class="tooltip-text">Annual interest rate for your mortgage</span>
+                <span class="tooltip-text">Annual interest rate for your mortgage. This is the percentage charged by the lender on the loan amount.</span>
               </span>
             </label>
             <div class="input-group" data-suffix="%">
@@ -54,13 +54,21 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="mortgageLength">Mortgage Length</label>
+            <label for="mortgageLength">Mortgage Length
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The total duration of your mortgage in months. A 30-year mortgage would be 360 months.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="months">
               <input type="number" id="mortgageLength" value="360" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="appreciationRate">Home Appreciation Rate</label>
+            <label for="appreciationRate">Home Appreciation Rate
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The annual percentage at which you expect the property value to increase. Historical average in many markets is 3-5%.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="%">
               <input type="number" id="appreciationRate" value="5" min="0" step="0.1">
             </div>
@@ -96,7 +104,7 @@
           <div class="form-group">
             <label for="maintenanceCosts">Maintenance & Renovation
               <span class="tooltip">ⓘ
-                <span class="tooltip-text">Annual costs for maintaining and renovating the property</span>
+                <span class="tooltip-text">Annual costs for maintaining and renovating the property, expressed as a percentage of the home value. A common rule of thumb is 1% of the property value per year.</span>
               </span>
             </label>
             <div class="input-group" data-suffix="%">
@@ -104,25 +112,41 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="houseInsurance">House Insurance</label>
+            <label for="houseInsurance">House Insurance
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Annual cost of insuring your property against damage, theft, and other risks.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="€/year">
               <input type="number" id="houseInsurance" value="800" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="lifeInsurance">Life Insurance</label>
+            <label for="lifeInsurance">Life Insurance
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Annual cost of life insurance often required by mortgage lenders to ensure the loan can be repaid in case of death.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="€/year">
               <input type="number" id="lifeInsurance" value="400" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="adminFees">Building Administration Fees</label>
+            <label for="adminFees">Building Administration Fees
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Monthly fees paid to a homeowners association or building management for common area maintenance and services.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="€/month">
               <input type="number" id="adminFees" value="150" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="propertyTaxes">Property Taxes</label>
+            <label for="propertyTaxes">Property Taxes
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Annual taxes levied by local governments based on the assessed value of your property.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="€/year">
               <input type="number" id="propertyTaxes" value="1200" min="0">
             </div>
@@ -136,19 +160,31 @@
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="rentPayment">Monthly Rent</label>
+            <label for="rentPayment">Monthly Rent
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The initial monthly rent payment for a comparable property to the one you're considering buying.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="€">
               <input type="number" id="rentPayment" value="1200" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="rentDeposits">Number of Deposits</label>
+            <label for="rentDeposits">Number of Deposits
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The number of months' rent required as a security deposit. This is typically 1-3 months depending on location.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="months">
               <input type="number" id="rentDeposits" value="2" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="rentIncreaseRate">Rent Increase Rate</label>
+            <label for="rentIncreaseRate">Rent Increase Rate
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">Rent won't remain the same for the entirety of your stay. It's expected to increase annually at a rate similar to inflation, usually 2-3% per year in most markets.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="%">
               <input type="number" id="rentIncreaseRate" value="2" min="0" step="0.1">
             </div>
@@ -162,7 +198,11 @@
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="stayLength">Stay Length</label>
+            <label for="stayLength">Stay Length
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The number of years you plan to live in the property. This is a critical factor in the buy vs. rent decision, as shorter stays often favor renting.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="years">
               <input type="number" id="stayLength" value="10" min="1">
             </div>
@@ -170,7 +210,7 @@
           <div class="form-group">
             <label for="investmentReturn">Investment Return
               <span class="tooltip">ⓘ
-                <span class="tooltip-text">Expected annual return rate if investing in the market</span>
+                <span class="tooltip-text">Expected annual return rate if investing in the market instead of buying property. This represents what your down payment and other costs could earn if invested elsewhere. Historical stock market returns average around 7-10% before inflation.</span>
               </span>
             </label>
             <div class="input-group" data-suffix="%">
@@ -178,7 +218,11 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inflation">Inflation Rate</label>
+            <label for="inflation">Inflation Rate
+              <span class="tooltip">ⓘ
+                <span class="tooltip-text">The annual rate at which the purchasing power of money decreases. This affects future costs and values. Central banks typically target around 2% inflation.</span>
+              </span>
+            </label>
             <div class="input-group" data-suffix="%">
               <input type="number" id="inflation" value="2" min="0" step="0.1">
             </div>
