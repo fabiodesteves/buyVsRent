@@ -331,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Generating results table');
     
     // Determine the number of years to show in the table
-    const mortgageLengthYears = Math.ceil(mortgageLength / 12);
     const yearsToShow = stayLength;
     
     // Get the table body element

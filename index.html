@@ -14,41 +14,59 @@
 
 <body>
   <div class="container">
-    <h1>Buy vs Rent Calculator</h1>
+    <div class="header-container">
+      <h1 data-i18n="pageTitle">Buy vs Rent Calculator</h1>
+      
+      <div class="language-selector">
+        <div class="language-option active" data-lang="en" title="English">
+          <img src="https://flagcdn.com/w40/gb.png" alt="English" width="24" height="16">
+        </div>
+        <div class="language-option" data-lang="pt" title="Português">
+          <img src="https://flagcdn.com/w40/pt.png" alt="Português" width="24" height="16">
+        </div>
+      </div>
+    </div>
     
+    <div class="theme-selector">
+      <div class="theme-option theme-blue active" data-theme="default" title="Blue Theme"></div>
+      <div class="theme-option theme-green" data-theme="green" title="Green Theme"></div>
+      <div class="theme-option theme-purple" data-theme="purple" title="Purple Theme"></div>
+      <div class="theme-option theme-dark" data-theme="dark" title="Dark Theme"></div>
+    </div>
+
     <div class="description">
-      <p>Deciding whether to buy a home or continue renting is rarely straightforward. This calculator helps you compare the long-term financial outcomes of both options by considering multiple factors: property appreciation, mortgage terms, maintenance costs, investment returns, and more. Enter your specific details below to see which choice might be better for your financial future.</p>
+      <p data-i18n="description">Deciding whether to buy a home or continue renting is rarely straightforward. This calculator helps you compare the long-term financial outcomes of both options by considering multiple factors: property appreciation, mortgage terms, maintenance costs, investment returns, and more. Enter your specific details below to see which choice might be better for your financial future.</p>
     </div>
 
     <div class="tabs">
-      <div class="tab active" data-tab="inputs">Inputs</div>
-      <div class="tab" data-tab="results">Results</div>
+      <div class="tab active" data-tab="inputs" data-i18n="inputsTab">Inputs</div>
+      <div class="tab" data-tab="results" data-i18n="resultsTab">Results</div>
       <div id="exportBtnContainer" style="display: none; margin-left: auto;">
-        <button id="exportBtn" class="export-btn">Export</button>
+        <button id="exportBtn" class="export-btn" data-i18n="exportBtn">Export</button>
       </div>
     </div>
 
     <div class="tab-content active" id="inputs-tab">
       <div class="card">
         <div class="card-header">
-          <h2>Property Purchase Details</h2>
+          <h2 data-i18n="propertyPurchaseDetails">Property Purchase Details</h2>
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="housePrice">House Price</label>
+            <label for="housePrice" data-i18n="housePrice">House Price</label>
             <div class="input-group" data-suffix="€">
               <input type="number" id="housePrice" value="300000" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="downPayment">Down Payment</label>
+            <label for="downPayment" data-i18n="downPayment">Down Payment</label>
             <div class="input-group" data-suffix="€">
               <input type="number" id="downPayment" value="60000" min="0">
             </div>
           </div>
           <div class="form-group">
-            <label for="interestRate">Interest Rate
-              <span class="tooltip">ⓘ
+            <label for="interestRate" data-i18n="interestRate">Interest Rate
+              <span class="tooltip" data-i18n-tooltip="interestRateTooltip">ⓘ
                 <span class="tooltip-text">Annual interest rate for your mortgage. This is the percentage charged by the lender on the loan amount.</span>
               </span>
             </label>
@@ -57,8 +75,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="mortgageLength">Mortgage Length
-              <span class="tooltip">ⓘ
+            <label for="mortgageLength" data-i18n="mortgageLength">Mortgage Length
+              <span class="tooltip" data-i18n-tooltip="mortgageLengthTooltip">ⓘ
                 <span class="tooltip-text">The total duration of your mortgage in months. A 30-year mortgage would be 360 months.</span>
               </span>
             </label>
@@ -67,8 +85,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="appreciationRate">Home Appreciation Rate
-              <span class="tooltip">ⓘ
+            <label for="appreciationRate" data-i18n="appreciationRate">Home Appreciation Rate
+              <span class="tooltip" data-i18n-tooltip="appreciationRateTooltip">ⓘ
                 <span class="tooltip-text">The annual percentage at which you expect the property value to increase. Historical average in many markets is 3-5%.</span>
               </span>
             </label>
@@ -77,8 +95,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="buyingCosts">Buying Costs
-              <span class="tooltip">ⓘ
+            <label for="buyingCosts" data-i18n="buyingCosts">Buying Costs
+              <span class="tooltip" data-i18n-tooltip="buyingCostsTooltip">ⓘ
                 <span class="tooltip-text">Costs associated with purchasing the property (notary, taxes, etc.)</span>
               </span>
             </label>
@@ -87,8 +105,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="sellingCosts">Selling Costs
-              <span class="tooltip">ⓘ
+            <label for="sellingCosts" data-i18n="sellingCosts">Selling Costs
+              <span class="tooltip" data-i18n-tooltip="sellingCostsTooltip">ⓘ
                 <span class="tooltip-text">Costs associated with selling the property (agent fees, taxes, etc.)</span>
               </span>
             </label>
@@ -101,12 +119,12 @@
 
       <div class="card">
         <div class="card-header">
-          <h2>Ongoing Housing Expenses</h2>
+          <h2 data-i18n="ongoingHousingExpenses">Ongoing Housing Expenses</h2>
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="maintenanceCosts">Maintenance & Renovation
-              <span class="tooltip">ⓘ
+            <label for="maintenanceCosts" data-i18n="maintenanceCosts">Maintenance & Renovation
+              <span class="tooltip" data-i18n-tooltip="maintenanceCostsTooltip">ⓘ
                 <span class="tooltip-text">Annual costs for maintaining and renovating the property, expressed as a percentage of the home value. A common rule of thumb is 1% of the property value per year.</span>
               </span>
             </label>
@@ -115,8 +133,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="houseInsurance">House Insurance
-              <span class="tooltip">ⓘ
+            <label for="houseInsurance" data-i18n="houseInsurance">House Insurance
+              <span class="tooltip" data-i18n-tooltip="houseInsuranceTooltip">ⓘ
                 <span class="tooltip-text">Annual cost of insuring your property against damage, theft, and other risks.</span>
               </span>
             </label>
@@ -125,8 +143,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="lifeInsurance">Life Insurance
-              <span class="tooltip">ⓘ
+            <label for="lifeInsurance" data-i18n="lifeInsurance">Life Insurance
+              <span class="tooltip" data-i18n-tooltip="lifeInsuranceTooltip">ⓘ
                 <span class="tooltip-text">Annual cost of life insurance often required by mortgage lenders to ensure the loan can be repaid in case of death.</span>
               </span>
             </label>
@@ -135,8 +153,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="adminFees">Building Administration Fees
-              <span class="tooltip">ⓘ
+            <label for="adminFees" data-i18n="adminFees">Building Administration Fees
+              <span class="tooltip" data-i18n-tooltip="adminFeesTooltip">ⓘ
                 <span class="tooltip-text">Monthly fees paid to a homeowners association or building management for common area maintenance and services.</span>
               </span>
             </label>
@@ -145,8 +163,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="propertyTaxes">Property Taxes
-              <span class="tooltip">ⓘ
+            <label for="propertyTaxes" data-i18n="propertyTaxes">Property Taxes
+              <span class="tooltip" data-i18n-tooltip="propertyTaxesTooltip">ⓘ
                 <span class="tooltip-text">Annual taxes levied by local governments based on the assessed value of your property.</span>
               </span>
             </label>
@@ -159,12 +177,12 @@
 
       <div class="card">
         <div class="card-header">
-          <h2>Rental Details</h2>
+          <h2 data-i18n="rentalDetails">Rental Details</h2>
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="rentPayment">Monthly Rent
-              <span class="tooltip">ⓘ
+            <label for="rentPayment" data-i18n="rentPayment">Monthly Rent
+              <span class="tooltip" data-i18n-tooltip="rentPaymentTooltip">ⓘ
                 <span class="tooltip-text">The initial monthly rent payment for a comparable property to the one you're considering buying.</span>
               </span>
             </label>
@@ -173,8 +191,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="rentDeposits">Number of Deposits
-              <span class="tooltip">ⓘ
+            <label for="rentDeposits" data-i18n="rentDeposits">Number of Deposits
+              <span class="tooltip" data-i18n-tooltip="rentDepositsTooltip">ⓘ
                 <span class="tooltip-text">The number of months' rent required as a security deposit. This is typically 1-3 months depending on location.</span>
               </span>
             </label>
@@ -183,8 +201,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="rentIncreaseRate">Rent Increase Rate
-              <span class="tooltip">ⓘ
+            <label for="rentIncreaseRate" data-i18n="rentIncreaseRate">Rent Increase Rate
+              <span class="tooltip" data-i18n-tooltip="rentIncreaseRateTooltip">ⓘ
                 <span class="tooltip-text">Rent won't remain the same for the entirety of your stay. It's expected to increase annually at a rate similar to inflation, usually 2-3% per year in most markets.</span>
               </span>
             </label>
@@ -197,12 +215,12 @@
 
       <div class="card">
         <div class="card-header">
-          <h2>General Parameters</h2>
+          <h2 data-i18n="generalParameters">General Parameters</h2>
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="stayLength">Stay Length
-              <span class="tooltip">ⓘ
+            <label for="stayLength" data-i18n="stayLength">Stay Length
+              <span class="tooltip" data-i18n-tooltip="stayLengthTooltip">ⓘ
                 <span class="tooltip-text">The number of years you plan to live in the property. This is a critical factor in the buy vs. rent decision, as shorter stays often favor renting.</span>
               </span>
             </label>
@@ -211,8 +229,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="investmentReturn">Investment Return
-              <span class="tooltip">ⓘ
+            <label for="investmentReturn" data-i18n="investmentReturn">Investment Return
+              <span class="tooltip" data-i18n-tooltip="investmentReturnTooltip">ⓘ
                 <span class="tooltip-text">Expected annual return rate if investing in the market instead of buying property. This represents what your down payment and other costs could earn if invested elsewhere. Historical stock market returns average around 7-10% before inflation.</span>
               </span>
             </label>
@@ -221,8 +239,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inflation">Inflation Rate
-              <span class="tooltip">ⓘ
+            <label for="inflation" data-i18n="inflation">Inflation Rate
+              <span class="tooltip" data-i18n-tooltip="inflationTooltip">ⓘ
                 <span class="tooltip-text">The annual rate at which the purchasing power of money decreases. This affects future costs and values. Central banks typically target around 2% inflation.</span>
               </span>
             </label>
@@ -241,12 +259,12 @@
     <div class="tab-content" id="results-tab">
       <div class="result-card">
         <div class="result-header">
-          <h3>Buying Scenario</h3>
+          <h3 data-i18n="buyingScenario">Buying Scenario</h3>
         </div>
         <div class="result-grid">
           <div class="result-item">
             <div class="result-label">Financed Amount
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="financedAmountTooltip">ⓘ
                 <span class="tooltip-text">The amount borrowed from the lender. Calculated as the house price minus your down payment.</span>
               </span>
             </div>
@@ -254,7 +272,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Monthly Mortgage Payment
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="monthlyPaymentTooltip">ⓘ
                 <span class="tooltip-text">Your regular monthly payment to the lender. Calculated based on the financed amount, interest rate, and mortgage length.</span>
               </span>
             </div>
@@ -262,7 +280,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Annual Housing Expenses
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="yearlyHousingExpensesTooltip">ⓘ
                 <span class="tooltip-text">Yearly costs beyond the mortgage payment. Includes maintenance, insurance, property taxes, and administration fees.</span>
               </span>
             </div>
@@ -270,7 +288,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Total Monthly Housing Expenses
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="totalMonthlyHousingExpensesTooltip">ⓘ
                 <span class="tooltip-text">The complete monthly cost of homeownership. Combines the mortgage payment with a monthly portion of the annual housing expenses.</span>
               </span>
             </div>
@@ -278,7 +296,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Total Mortgage Paid
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="totalMortgagePaidTooltip">ⓘ
                 <span class="tooltip-text">The total amount paid toward the mortgage during your stay. Calculated as the monthly payment multiplied by the number of months (limited by mortgage length).</span>
               </span>
             </div>
@@ -286,7 +304,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Total Housing Expenses
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="totalHousingExpensesTooltip">ⓘ
                 <span class="tooltip-text">The sum of all non-mortgage housing costs over your stay period, adjusted for inflation.</span>
               </span>
             </div>
@@ -294,7 +312,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">House Future Value
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="houseFutureValueTooltip">ⓘ
                 <span class="tooltip-text">The estimated value of your property at the end of your stay. Calculated using the home appreciation rate over the stay period.</span>
               </span>
             </div>
@@ -302,7 +320,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Total Housing Expenditure
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="totalHousingExpenditureTooltip">ⓘ
                 <span class="tooltip-text">The total amount spent on housing during your stay. Includes down payment, buying costs, mortgage payments, housing expenses, and selling costs.</span>
               </span>
             </div>
@@ -314,12 +332,12 @@
         <div id="buyingSavingsSection" style="display: none;">
           <div class="section-divider"></div>
           <div class="section-header">
-            <h4>Monthly Savings from Buying</h4>
+            <h4 data-i18n="monthlySavingsFromBuying">Monthly Savings from Buying</h4>
           </div>
           <div class="result-grid">
             <div class="result-item">
               <div class="result-label">Monthly Savings (Rent - Buying)
-                <span class="tooltip">ⓘ
+                <span class="tooltip" data-i18n-tooltip="buyingMonthlySavingsTooltip">ⓘ
                   <span class="tooltip-text">The monthly amount saved by buying instead of renting. Calculated as the difference between monthly rent and total monthly housing expenses.</span>
                 </span>
               </div>
@@ -327,7 +345,7 @@
             </div>
             <div class="result-item">
               <div class="result-label">Future Value of Monthly Savings
-                <span class="tooltip">ⓘ
+                <span class="tooltip" data-i18n-tooltip="buyingSavingsFutureValueTooltip">ⓘ
                   <span class="tooltip-text">The potential value of your monthly savings if invested at the specified investment return rate over your stay period.</span>
                 </span>
               </div>
@@ -341,7 +359,7 @@
         <div class="result-grid">
           <div class="result-item">
             <div class="result-label">Net Result After Stay Period
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="buyingNetWorthTooltip">ⓘ
                 <span class="tooltip-text">Your financial position at the end of your stay if you buy. Includes the house value minus remaining mortgage, selling costs, initial investment, plus any investment returns from monthly savings.</span>
               </span>
             </div>
@@ -352,12 +370,12 @@
 
       <div class="result-card">
         <div class="result-header">
-          <h3>Renting Scenario</h3>
+          <h3 data-i18n="rentingScenario">Renting Scenario</h3>
         </div>
         <div class="result-grid">
           <div class="result-item">
             <div class="result-label">Initial Monthly Rent
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="initialRentTooltip">ⓘ
                 <span class="tooltip-text">The starting monthly rent payment for a comparable property.</span>
               </span>
             </div>
@@ -365,7 +383,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Total Rent Deposits
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="totalRentDepositsTooltip">ⓘ
                 <span class="tooltip-text">The security deposit paid at the beginning of your rental. Calculated as the initial monthly rent multiplied by the number of deposits.</span>
               </span>
             </div>
@@ -373,7 +391,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Final Monthly Rent
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="finalRentTooltip">ⓘ
                 <span class="tooltip-text">The estimated monthly rent at the end of your stay period. Calculated using the rent increase rate over the stay period.</span>
               </span>
             </div>
@@ -381,7 +399,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Total Rent Paid
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="totalRentPaidTooltip">ⓘ
                 <span class="tooltip-text">The total amount paid in rent over your stay period, accounting for annual rent increases.</span>
               </span>
             </div>
@@ -389,7 +407,7 @@
           </div>
           <div class="result-item">
             <div class="result-label">Future Value of Initial Investment
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="rentingInvestmentValueTooltip">ⓘ
                 <span class="tooltip-text">The potential value of the down payment and buying costs if invested in the market instead of buying property. Calculated using the investment return rate over the stay period.</span>
               </span>
             </div>
@@ -401,12 +419,12 @@
         <div id="rentingSavingsSection" style="display: none;">
           <div class="section-divider"></div>
           <div class="section-header">
-            <h4>Monthly Savings from Renting</h4>
+            <h4 data-i18n="monthlySavingsFromRenting">Monthly Savings from Renting</h4>
           </div>
           <div class="result-grid">
             <div class="result-item">
               <div class="result-label">Monthly Savings (Buying - Rent)
-                <span class="tooltip">ⓘ
+                <span class="tooltip" data-i18n-tooltip="rentingMonthlySavingsTooltip">ⓘ
                   <span class="tooltip-text">The monthly amount saved by renting instead of buying. Calculated as the difference between total monthly housing expenses and monthly rent.</span>
                 </span>
               </div>
@@ -414,7 +432,7 @@
             </div>
             <div class="result-item">
               <div class="result-label">Future Value of Monthly Savings
-                <span class="tooltip">ⓘ
+                <span class="tooltip" data-i18n-tooltip="rentingSavingsFutureValueTooltip">ⓘ
                   <span class="tooltip-text">The potential value of your monthly savings if invested at the specified investment return rate over your stay period.</span>
                 </span>
               </div>
@@ -428,7 +446,7 @@
         <div class="result-grid">
           <div class="result-item">
             <div class="result-label">Net Result After Stay Period
-              <span class="tooltip">ⓘ
+              <span class="tooltip" data-i18n-tooltip="rentingNetWorthTooltip">ⓘ
                 <span class="tooltip-text">Your financial position at the end of your stay if you rent. Includes the future value of your initial investment, minus total rent paid, plus security deposits returned, and any investment returns from monthly savings.</span>
               </span>
             </div>
@@ -438,8 +456,8 @@
       </div>
 
       <div class="comparison-result">
-        <h3>Buy vs Rent Comparison
-          <span class="tooltip">ⓘ
+        <h3 data-i18n="buyVsRentComparison">Buy vs Rent Comparison
+          <span class="tooltip" data-i18n-tooltip="comparisonTooltip">ⓘ
             <span class="tooltip-text">The final comparison between buying and renting based on the net financial outcome after your stay period.</span>
           </span>
         </h3>
@@ -452,8 +470,8 @@
 
       <!-- Net Results Over Time Table -->
       <div class="results-table-container" style="display: none;">
-        <h3>Net Results Over Time
-          <span class="tooltip">ⓘ
+        <h3 data-i18n="netResultsOverTime">Net Results Over Time
+          <span class="tooltip" data-i18n-tooltip="netResultsOverTimeTooltip">ⓘ
             <span class="tooltip-text">This table shows how the net financial position for buying and renting changes each year throughout the analysis period.</span>
           </span>
         </h3>
@@ -461,10 +479,10 @@
           <table id="resultsTable" class="results-table">
             <thead>
               <tr>
-                <th>Year</th>
-                <th>Buying Net Result</th>
-                <th>Renting Net Result</th>
-                <th>Difference</th>
+                <th data-i18n="year">Year</th>
+                <th data-i18n="buyingNetResult">Buying Net Result</th>
+                <th data-i18n="rentingNetResult">Renting Net Result</th>
+                <th data-i18n="difference">Difference</th>
               </tr>
             </thead>
             <tbody>
@@ -476,8 +494,8 @@
 
       <!-- Net Worth Chart -->
       <div class="chart-container">
-        <h3>Net Result comparison
-          <span class="tooltip">ⓘ
+        <h3 data-i18n="netResultComparison">Net Result comparison
+          <span class="tooltip" data-i18n-tooltip="netResultComparisonTooltip">ⓘ
             <span class="tooltip-text">This chart visualizes how the net worth for buying and renting changes over time, helping you identify the crossover point where one option becomes better than the other.</span>
           </span>
         </h3>
@@ -493,12 +511,89 @@
   </div>
 
   <footer class="footer">
-    <p>Created with ❤️ by <a href="https://fabioesteves.com/" target="_blank">Fábio Esteves</a></p>
+    <p><span data-i18n="createdWith">Created with ❤️ by</span> <a href="https://fabioesteves.com/" target="_blank">Fábio Esteves</a></p>
   </footer>
 
   <script src="script.js"></script>
+  <script src="translations.js"></script>
   
   <script>
+    // Theme selector functionality
+    document.querySelectorAll('.theme-option').forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove active class from all options
+        document.querySelectorAll('.theme-option').forEach(opt => {
+          opt.classList.remove('active');
+        });
+        
+        // Add active class to clicked option
+        this.classList.add('active');
+        
+        // Get theme name
+        const theme = this.getAttribute('data-theme');
+        
+        // Remove all theme classes from body
+        document.body.classList.remove('theme-green', 'theme-purple', 'theme-dark');
+        
+        // Add theme class if not default
+        if (theme !== 'default') {
+          document.body.classList.add('theme-' + theme);
+        }
+        
+        // Save theme preference to localStorage
+        localStorage.setItem('buyVsRentTheme', theme);
+        
+        // Update chart colors if chart exists
+        if (window.netWorthChart) {
+          updateChartColors();
+        }
+      });
+    });
+    
+    // Load saved theme on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('buyVsRentTheme');
+      if (savedTheme) {
+        // Trigger click on the saved theme option
+        const themeOption = document.querySelector(`.theme-option[data-theme="${savedTheme}"]`);
+        if (themeOption) {
+          themeOption.click();
+        }
+      }
+    });
+    
+    // Function to update chart colors based on current theme
+    function updateChartColors() {
+      if (!window.netWorthChart) return;
+      
+      let buyingColor, rentingColor;
+      
+      // Set colors based on theme
+      if (document.body.classList.contains('theme-green')) {
+        buyingColor = '#0f9d58';
+        rentingColor = '#4285f4';
+      } else if (document.body.classList.contains('theme-purple')) {
+        buyingColor = '#673ab7';
+        rentingColor = '#4285f4';
+      } else if (document.body.classList.contains('theme-dark')) {
+        buyingColor = '#81c995';
+        rentingColor = '#8ab4f8';
+      } else {
+        // Default blue theme
+        buyingColor = '#34a853';
+        rentingColor = '#4285f4';
+      }
+      
+      // Update dataset colors
+      window.netWorthChart.data.datasets[0].borderColor = buyingColor;
+      window.netWorthChart.data.datasets[0].backgroundColor = buyingColor + '20'; // 20 is hex for 12% opacity
+      window.netWorthChart.data.datasets[1].borderColor = rentingColor;
+      window.netWorthChart.data.datasets[1].backgroundColor = rentingColor + '20';
+      
+      // Update chart
+      window.netWorthChart.update();
+    }
+    
     // Add event listener for the export button
     document.getElementById('calculateBtn').addEventListener('click', function() {
       // Show the export button when calculations are performed
@@ -524,7 +619,7 @@
       
       // Add title
       const title = document.createElement('h2');
-      title.textContent = 'Buy vs Rent Calculation Results';
+      title.textContent = translations[document.documentElement.getAttribute('lang') || 'en'].exportResults;
       
       // Create table
       const table = document.createElement('table');
@@ -534,9 +629,9 @@
       const thead = document.createElement('thead');
       const headerRow = document.createElement('tr');
       const paramHeader = document.createElement('th');
-      paramHeader.textContent = 'Parameter';
+      paramHeader.textContent = translations[document.documentElement.getAttribute('lang') || 'en'].parameter;
       const valueHeader = document.createElement('th');
-      valueHeader.textContent = 'Value';
+      valueHeader.textContent = translations[document.documentElement.getAttribute('lang') || 'en'].value;
       headerRow.appendChild(paramHeader);
       headerRow.appendChild(valueHeader);
       thead.appendChild(headerRow);
@@ -568,72 +663,73 @@
         tbody.appendChild(row);
       }
       
+      // Get current language
+      const currentLang = document.documentElement.getAttribute('lang') || 'en';
+      const t = translations[currentLang];
+      
       // Add input values
-      addSectionHeader('Property Purchase Details');
-      addRow('House Price', document.getElementById('housePrice').value + ' €');
-      addRow('Down Payment', document.getElementById('downPayment').value + ' €');
-      addRow('Interest Rate', document.getElementById('interestRate').value + ' %');
-      addRow('Mortgage Length', document.getElementById('mortgageLength').value + ' months');
-      addRow('Home Appreciation Rate', document.getElementById('appreciationRate').value + ' %');
-      addRow('Buying Costs', document.getElementById('buyingCosts').value + ' €');
-      addRow('Selling Costs', document.getElementById('sellingCosts').value + ' %');
+      addSectionHeader(t.propertyPurchaseDetails);
+      addRow(t.housePrice, document.getElementById('housePrice').value + ' €');
+      addRow(t.downPayment, document.getElementById('downPayment').value + ' €');
+      addRow(t.interestRate, document.getElementById('interestRate').value + ' %');
+      addRow(t.mortgageLength, document.getElementById('mortgageLength').value + ' months');
+      addRow(t.appreciationRate, document.getElementById('appreciationRate').value + ' %');
+      addRow(t.buyingCosts, document.getElementById('buyingCosts').value + ' €');
+      addRow(t.sellingCosts, document.getElementById('sellingCosts').value + ' %');
       
-      addSectionHeader('Ongoing Housing Expenses');
-      addRow('Maintenance & Renovation', document.getElementById('maintenanceCosts').value + ' %');
-      addRow('House Insurance', document.getElementById('houseInsurance').value + ' €/year');
-      addRow('Life Insurance', document.getElementById('lifeInsurance').value + ' €/year');
-      addRow('Building Administration Fees', document.getElementById('adminFees').value + ' €/month');
-      addRow('Property Taxes', document.getElementById('propertyTaxes').value + ' €/year');
+      addSectionHeader(t.ongoingHousingExpenses);
+      addRow(t.maintenanceCosts, document.getElementById('maintenanceCosts').value + ' %');
+      addRow(t.houseInsurance, document.getElementById('houseInsurance').value + ' €/year');
+      addRow(t.lifeInsurance, document.getElementById('lifeInsurance').value + ' €/year');
+      addRow(t.adminFees, document.getElementById('adminFees').value + ' €/month');
+      addRow(t.propertyTaxes, document.getElementById('propertyTaxes').value + ' €/year');
       
-      addSectionHeader('Rental Details');
-      addRow('Monthly Rent', document.getElementById('rentPayment').value + ' €');
-      addRow('Number of Deposits', document.getElementById('rentDeposits').value + ' months');
-      addRow('Rent Increase Rate', document.getElementById('rentIncreaseRate').value + ' %');
+      addSectionHeader(t.rentalDetails);
+      addRow(t.rentPayment, document.getElementById('rentPayment').value + ' €');
+      addRow(t.rentDeposits, document.getElementById('rentDeposits').value + ' months');
+      addRow(t.rentIncreaseRate, document.getElementById('rentIncreaseRate').value + ' %');
       
-      addSectionHeader('General Parameters');
-      addRow('Stay Length', document.getElementById('stayLength').value + ' years');
-      addRow('Investment Return', document.getElementById('investmentReturn').value + ' %');
-      addRow('Inflation Rate', document.getElementById('inflation').value + ' %');
+      addSectionHeader(t.generalParameters);
+      addRow(t.stayLength, document.getElementById('stayLength').value + ' years');
+      addRow(t.investmentReturn, document.getElementById('investmentReturn').value + ' %');
+      addRow(t.inflation, document.getElementById('inflation').value + ' %');
       
-      // Add result values
-      addSectionHeader('Buying Scenario Results');
-      addRow('Financed Amount', document.getElementById('financedAmount').textContent);
-      addRow('Monthly Mortgage Payment', document.getElementById('monthlyPayment').textContent);
-      addRow('Annual Housing Expenses', document.getElementById('yearlyHousingExpenses').textContent);
-      addRow('Total Monthly Housing Expenses', document.getElementById('totalMonthlyHousingExpenses').textContent);
-      addRow('Total Mortgage Paid', document.getElementById('totalMortgagePaid').textContent);
-      addRow('Total Housing Expenses', document.getElementById('totalHousingExpenses').textContent);
-      addRow('House Future Value', document.getElementById('houseFutureValue').textContent);
-      addRow('Total Housing Expenditure', document.getElementById('totalHousingExpenditure').textContent);
-      addRow('Net Result After Stay Period', document.getElementById('buyingNetWorth').textContent);
+      addSectionHeader(t.buyingScenario);
+      addRow(t.financedAmount, document.getElementById('financedAmount').textContent);
+      addRow(t.monthlyPayment, document.getElementById('monthlyPayment').textContent);
+      addRow(t.yearlyHousingExpenses, document.getElementById('yearlyHousingExpenses').textContent);
+      addRow(t.totalMonthlyHousingExpenses, document.getElementById('totalMonthlyHousingExpenses').textContent);
+      addRow(t.totalMortgagePaid, document.getElementById('totalMortgagePaid').textContent);
+      addRow(t.totalHousingExpenses, document.getElementById('totalHousingExpenses').textContent);
+      addRow(t.houseFutureValue, document.getElementById('houseFutureValue').textContent);
+      addRow(t.totalHousingExpenditure, document.getElementById('totalHousingExpenditure').textContent);
+      addRow(t.buyingNetWorth, document.getElementById('buyingNetWorth').textContent);
       
-      // Add optional buying savings if visible
       if (document.getElementById('buyingSavingsSection').style.display !== 'none') {
-        addRow('Monthly Savings (Rent - Buying)', document.getElementById('buyingMonthlySavings').textContent);
-        addRow('Future Value of Monthly Savings', document.getElementById('buyingSavingsFutureValue').textContent);
+        addRow(t.buyingMonthlySavings, document.getElementById('buyingMonthlySavings').textContent);
+        addRow(t.buyingSavingsFutureValue, document.getElementById('buyingSavingsFutureValue').textContent);
       }
       
-      addSectionHeader('Renting Scenario Results');
-      addRow('Initial Monthly Rent', document.getElementById('initialRent').textContent);
-      addRow('Total Rent Deposits', document.getElementById('totalRentDeposits').textContent);
-      addRow('Final Monthly Rent', document.getElementById('finalRent').textContent);
-      addRow('Total Rent Paid', document.getElementById('totalRentPaid').textContent);
-      addRow('Future Value of Initial Investment', document.getElementById('rentingInvestmentValue').textContent);
-      addRow('Net Result After Stay Period', document.getElementById('rentingNetWorth').textContent);
+      addSectionHeader(t.rentingScenario);
+      addRow(t.initialRent, document.getElementById('initialRent').textContent);
+      addRow(t.totalRentDeposits, document.getElementById('totalRentDeposits').textContent);
+      addRow(t.finalRent, document.getElementById('finalRent').textContent);
+      addRow(t.totalRentPaid, document.getElementById('totalRentPaid').textContent);
+      addRow(t.rentingInvestmentValue, document.getElementById('rentingInvestmentValue').textContent);
+      addRow(t.rentingNetWorth, document.getElementById('rentingNetWorth').textContent);
       
-      // Add optional renting savings if visible
       if (document.getElementById('rentingSavingsSection').style.display !== 'none') {
-        addRow('Monthly Savings (Buying - Rent)', document.getElementById('rentingMonthlySavings').textContent);
-        addRow('Future Value of Monthly Savings', document.getElementById('rentingSavingsFutureValue').textContent);
+        addRow(t.rentingMonthlySavings, document.getElementById('rentingMonthlySavings').textContent);
+        addRow(t.rentingSavingsFutureValue, document.getElementById('rentingSavingsFutureValue').textContent);
       }
       
-      addSectionHeader('Comparison');
-      addRow('Final Comparison', document.getElementById('comparisonResult').textContent);
+      addSectionHeader(t.comparison);
+      addRow(t.comparisonResult, document.getElementById('comparisonResult').textContent);
       
       // Add export to Excel button
       const exportBtn = document.createElement('button');
       exportBtn.className = 'export-excel-btn';
-      exportBtn.textContent = 'Export to Excel';
+      exportBtn.textContent = t.exportToExcel;
       exportBtn.onclick = function() {
         exportToExcel();
       };
@@ -652,7 +748,7 @@
       // Function to export data to Excel
       function exportToExcel() {
         // Add BOM (Byte Order Mark) for proper UTF-8 encoding with Euro symbol
-        let csvContent = "\uFEFF" + "Parameter,Value\n";
+        let csvContent = "\uFEFF" + `${t.parameter},${t.value}\n`;
         
         // Function to add a section to CSV
         function addSectionToCSV(sectionName) {
@@ -667,63 +763,63 @@
         }
         
         // Add all the same data to CSV
-        addSectionToCSV('Property Purchase Details');
-        addRowToCSV('House Price', document.getElementById('housePrice').value + ' €');
-        addRowToCSV('Down Payment', document.getElementById('downPayment').value + ' €');
-        addRowToCSV('Interest Rate', document.getElementById('interestRate').value + ' %');
-        addRowToCSV('Mortgage Length', document.getElementById('mortgageLength').value + ' months');
-        addRowToCSV('Home Appreciation Rate', document.getElementById('appreciationRate').value + ' %');
-        addRowToCSV('Buying Costs', document.getElementById('buyingCosts').value + ' €');
-        addRowToCSV('Selling Costs', document.getElementById('sellingCosts').value + ' %');
+        addSectionToCSV(t.propertyPurchaseDetails);
+        addRowToCSV(t.housePrice, document.getElementById('housePrice').value + ' €');
+        addRowToCSV(t.downPayment, document.getElementById('downPayment').value + ' €');
+        addRowToCSV(t.interestRate, document.getElementById('interestRate').value + ' %');
+        addRowToCSV(t.mortgageLength, document.getElementById('mortgageLength').value + ' months');
+        addRowToCSV(t.appreciationRate, document.getElementById('appreciationRate').value + ' %');
+        addRowToCSV(t.buyingCosts, document.getElementById('buyingCosts').value + ' €');
+        addRowToCSV(t.sellingCosts, document.getElementById('sellingCosts').value + ' %');
         
-        addSectionToCSV('Ongoing Housing Expenses');
-        addRowToCSV('Maintenance & Renovation', document.getElementById('maintenanceCosts').value + ' %');
-        addRowToCSV('House Insurance', document.getElementById('houseInsurance').value + ' €/year');
-        addRowToCSV('Life Insurance', document.getElementById('lifeInsurance').value + ' €/year');
-        addRowToCSV('Building Administration Fees', document.getElementById('adminFees').value + ' €/month');
-        addRowToCSV('Property Taxes', document.getElementById('propertyTaxes').value + ' €/year');
+        addSectionToCSV(t.ongoingHousingExpenses);
+        addRowToCSV(t.maintenanceCosts, document.getElementById('maintenanceCosts').value + ' %');
+        addRowToCSV(t.houseInsurance, document.getElementById('houseInsurance').value + ' €/year');
+        addRowToCSV(t.lifeInsurance, document.getElementById('lifeInsurance').value + ' €/year');
+        addRowToCSV(t.adminFees, document.getElementById('adminFees').value + ' €/month');
+        addRowToCSV(t.propertyTaxes, document.getElementById('propertyTaxes').value + ' €/year');
         
-        addSectionToCSV('Rental Details');
-        addRowToCSV('Monthly Rent', document.getElementById('rentPayment').value + ' €');
-        addRowToCSV('Number of Deposits', document.getElementById('rentDeposits').value + ' months');
-        addRowToCSV('Rent Increase Rate', document.getElementById('rentIncreaseRate').value + ' %');
+        addSectionToCSV(t.rentalDetails);
+        addRowToCSV(t.rentPayment, document.getElementById('rentPayment').value + ' €');
+        addRowToCSV(t.rentDeposits, document.getElementById('rentDeposits').value + ' months');
+        addRowToCSV(t.rentIncreaseRate, document.getElementById('rentIncreaseRate').value + ' %');
         
-        addSectionToCSV('General Parameters');
-        addRowToCSV('Stay Length', document.getElementById('stayLength').value + ' years');
-        addRowToCSV('Investment Return', document.getElementById('investmentReturn').value + ' %');
-        addRowToCSV('Inflation Rate', document.getElementById('inflation').value + ' %');
+        addSectionToCSV(t.generalParameters);
+        addRowToCSV(t.stayLength, document.getElementById('stayLength').value + ' years');
+        addRowToCSV(t.investmentReturn, document.getElementById('investmentReturn').value + ' %');
+        addRowToCSV(t.inflation, document.getElementById('inflation').value + ' %');
         
-        addSectionToCSV('Buying Scenario Results');
-        addRowToCSV('Financed Amount', document.getElementById('financedAmount').textContent);
-        addRowToCSV('Monthly Mortgage Payment', document.getElementById('monthlyPayment').textContent);
-        addRowToCSV('Annual Housing Expenses', document.getElementById('yearlyHousingExpenses').textContent);
-        addRowToCSV('Total Monthly Housing Expenses', document.getElementById('totalMonthlyHousingExpenses').textContent);
-        addRowToCSV('Total Mortgage Paid', document.getElementById('totalMortgagePaid').textContent);
-        addRowToCSV('Total Housing Expenses', document.getElementById('totalHousingExpenses').textContent);
-        addRowToCSV('House Future Value', document.getElementById('houseFutureValue').textContent);
-        addRowToCSV('Total Housing Expenditure', document.getElementById('totalHousingExpenditure').textContent);
-        addRowToCSV('Net Result After Stay Period', document.getElementById('buyingNetWorth').textContent);
+        addSectionToCSV(t.buyingScenario);
+        addRowToCSV(t.financedAmount, document.getElementById('financedAmount').textContent);
+        addRowToCSV(t.monthlyPayment, document.getElementById('monthlyPayment').textContent);
+        addRowToCSV(t.yearlyHousingExpenses, document.getElementById('yearlyHousingExpenses').textContent);
+        addRowToCSV(t.totalMonthlyHousingExpenses, document.getElementById('totalMonthlyHousingExpenses').textContent);
+        addRowToCSV(t.totalMortgagePaid, document.getElementById('totalMortgagePaid').textContent);
+        addRowToCSV(t.totalHousingExpenses, document.getElementById('totalHousingExpenses').textContent);
+        addRowToCSV(t.houseFutureValue, document.getElementById('houseFutureValue').textContent);
+        addRowToCSV(t.totalHousingExpenditure, document.getElementById('totalHousingExpenditure').textContent);
+        addRowToCSV(t.buyingNetWorth, document.getElementById('buyingNetWorth').textContent);
         
         if (document.getElementById('buyingSavingsSection').style.display !== 'none') {
-          addRowToCSV('Monthly Savings (Rent - Buying)', document.getElementById('buyingMonthlySavings').textContent);
-          addRowToCSV('Future Value of Monthly Savings', document.getElementById('buyingSavingsFutureValue').textContent);
+          addRowToCSV(t.buyingMonthlySavings, document.getElementById('buyingMonthlySavings').textContent);
+          addRowToCSV(t.buyingSavingsFutureValue, document.getElementById('buyingSavingsFutureValue').textContent);
         }
         
-        addSectionToCSV('Renting Scenario Results');
-        addRowToCSV('Initial Monthly Rent', document.getElementById('initialRent').textContent);
-        addRowToCSV('Total Rent Deposits', document.getElementById('totalRentDeposits').textContent);
-        addRowToCSV('Final Monthly Rent', document.getElementById('finalRent').textContent);
-        addRowToCSV('Total Rent Paid', document.getElementById('totalRentPaid').textContent);
-        addRowToCSV('Future Value of Initial Investment', document.getElementById('rentingInvestmentValue').textContent);
-        addRowToCSV('Net Result After Stay Period', document.getElementById('rentingNetWorth').textContent);
+        addSectionToCSV(t.rentingScenario);
+        addRowToCSV(t.initialRent, document.getElementById('initialRent').textContent);
+        addRowToCSV(t.totalRentDeposits, document.getElementById('totalRentDeposits').textContent);
+        addRowToCSV(t.finalRent, document.getElementById('finalRent').textContent);
+        addRowToCSV(t.totalRentPaid, document.getElementById('totalRentPaid').textContent);
+        addRowToCSV(t.rentingInvestmentValue, document.getElementById('rentingInvestmentValue').textContent);
+        addRowToCSV(t.rentingNetWorth, document.getElementById('rentingNetWorth').textContent);
         
         if (document.getElementById('rentingSavingsSection').style.display !== 'none') {
-          addRowToCSV('Monthly Savings (Buying - Rent)', document.getElementById('rentingMonthlySavings').textContent);
-          addRowToCSV('Future Value of Monthly Savings', document.getElementById('rentingSavingsFutureValue').textContent);
+          addRowToCSV(t.rentingMonthlySavings, document.getElementById('rentingMonthlySavings').textContent);
+          addRowToCSV(t.rentingSavingsFutureValue, document.getElementById('rentingSavingsFutureValue').textContent);
         }
         
-        addSectionToCSV('Comparison');
-        addRowToCSV('Final Comparison', document.getElementById('comparisonResult').textContent);
+        addSectionToCSV(t.comparison);
+        addRowToCSV(t.comparisonResult, document.getElementById('comparisonResult').textContent);
         
         // Create a blob with UTF-8 encoding specified
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
