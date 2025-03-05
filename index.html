@@ -23,6 +23,9 @@
     <div class="tabs">
       <div class="tab active" data-tab="inputs">Inputs</div>
       <div class="tab" data-tab="results">Results</div>
+      <div id="exportBtnContainer" style="display: none; margin-left: auto;">
+        <button id="exportBtn" class="export-btn">Export</button>
+      </div>
     </div>
 
     <div class="tab-content active" id="inputs-tab">
@@ -494,6 +497,19 @@
   </footer>
 
   <script src="script.js"></script>
+  
+  <script>
+    // Add event listener for the export button
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+      // Show the export button when calculations are performed
+      document.getElementById('exportBtnContainer').style.display = 'block';
+    });
+    
+    document.getElementById('exportBtn').addEventListener('click', function() {
+      // Basic export functionality - will be expanded later
+      alert('Export functionality will be implemented here');
+    });
+  </script>
 </body>
 
 </html>
