@@ -421,3 +421,26 @@ button:hover {
   line-height: 1.5;
   margin: 0;
 }
+
+/* Footer styling */
+.footer {
+  margin-top: 40px;
+  padding: 16px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: var(--text-secondary-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.footer a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.footer a:hover {
+  color: var(--primary-dark-color);
+  text-decoration: underline;
+}
