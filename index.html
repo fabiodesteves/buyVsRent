@@ -651,7 +651,8 @@
       
       // Function to export data to Excel
       function exportToExcel() {
-        let csvContent = "Parameter,Value\n";
+        // Add BOM (Byte Order Mark) for proper UTF-8 encoding with Euro symbol
+        let csvContent = "\uFEFF" + "Parameter,Value\n";
         
         // Function to add a section to CSV
         function addSectionToCSV(sectionName) {
@@ -660,7 +661,9 @@
         
         // Function to add a row to CSV
         function addRowToCSV(label, value) {
-          csvContent += `"${label}","${value}"\n`;
+          // Ensure the Euro symbol is properly encoded
+          const formattedValue = value.replace(/€/g, '€');
+          csvContent += `"${label}","${formattedValue}"\n`;
         }
         
         // Add all the same data to CSV
@@ -722,8 +725,10 @@
         addSectionToCSV('Comparison');
         addRowToCSV('Final Comparison', document.getElementById('comparisonResult').textContent);
         
-        // Create a blob and download link
+        // Create a blob with UTF-8 encoding specified
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        
+        // Create download link
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.setAttribute('href', url);
