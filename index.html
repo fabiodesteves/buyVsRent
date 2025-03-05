@@ -493,7 +493,7 @@
   </div>
 
   <footer class="footer">
-    <p>Created by <a href="https://fabioesteves.com/" target="_blank">Fábio Esteves</a></p>
+    <p>Created with ❤️ by <a href="https://fabioesteves.com/" target="_blank">Fábio Esteves</a></p>
   </footer>
 
   <script src="script.js"></script>
@@ -506,8 +506,233 @@
     });
     
     document.getElementById('exportBtn').addEventListener('click', function() {
-      // Basic export functionality - will be expanded later
-      alert('Export functionality will be implemented here');
+      // Create a modal to display the data
+      const modal = document.createElement('div');
+      modal.className = 'export-modal';
+      
+      // Create modal content
+      const modalContent = document.createElement('div');
+      modalContent.className = 'export-modal-content';
+      
+      // Add close button
+      const closeBtn = document.createElement('span');
+      closeBtn.className = 'export-close-btn';
+      closeBtn.innerHTML = '&times;';
+      closeBtn.onclick = function() {
+        document.body.removeChild(modal);
+      };
+      
+      // Add title
+      const title = document.createElement('h2');
+      title.textContent = 'Buy vs Rent Calculation Results';
+      
+      // Create table
+      const table = document.createElement('table');
+      table.className = 'export-table';
+      
+      // Add table header
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      const paramHeader = document.createElement('th');
+      paramHeader.textContent = 'Parameter';
+      const valueHeader = document.createElement('th');
+      valueHeader.textContent = 'Value';
+      headerRow.appendChild(paramHeader);
+      headerRow.appendChild(valueHeader);
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+      
+      // Create table body
+      const tbody = document.createElement('tbody');
+      
+      // Function to add a section header
+      function addSectionHeader(sectionName) {
+        const row = document.createElement('tr');
+        row.className = 'export-section-header';
+        const cell = document.createElement('td');
+        cell.colSpan = 2;
+        cell.textContent = sectionName;
+        row.appendChild(cell);
+        tbody.appendChild(row);
+      }
+      
+      // Function to add a row to the table
+      function addRow(label, value) {
+        const row = document.createElement('tr');
+        const labelCell = document.createElement('td');
+        labelCell.textContent = label;
+        const valueCell = document.createElement('td');
+        valueCell.textContent = value;
+        row.appendChild(labelCell);
+        row.appendChild(valueCell);
+        tbody.appendChild(row);
+      }
+      
+      // Add input values
+      addSectionHeader('Property Purchase Details');
+      addRow('House Price', document.getElementById('housePrice').value + ' €');
+      addRow('Down Payment', document.getElementById('downPayment').value + ' €');
+      addRow('Interest Rate', document.getElementById('interestRate').value + ' %');
+      addRow('Mortgage Length', document.getElementById('mortgageLength').value + ' months');
+      addRow('Home Appreciation Rate', document.getElementById('appreciationRate').value + ' %');
+      addRow('Buying Costs', document.getElementById('buyingCosts').value + ' €');
+      addRow('Selling Costs', document.getElementById('sellingCosts').value + ' %');
+      
+      addSectionHeader('Ongoing Housing Expenses');
+      addRow('Maintenance & Renovation', document.getElementById('maintenanceCosts').value + ' %');
+      addRow('House Insurance', document.getElementById('houseInsurance').value + ' €/year');
+      addRow('Life Insurance', document.getElementById('lifeInsurance').value + ' €/year');
+      addRow('Building Administration Fees', document.getElementById('adminFees').value + ' €/month');
+      addRow('Property Taxes', document.getElementById('propertyTaxes').value + ' €/year');
+      
+      addSectionHeader('Rental Details');
+      addRow('Monthly Rent', document.getElementById('rentPayment').value + ' €');
+      addRow('Number of Deposits', document.getElementById('rentDeposits').value + ' months');
+      addRow('Rent Increase Rate', document.getElementById('rentIncreaseRate').value + ' %');
+      
+      addSectionHeader('General Parameters');
+      addRow('Stay Length', document.getElementById('stayLength').value + ' years');
+      addRow('Investment Return', document.getElementById('investmentReturn').value + ' %');
+      addRow('Inflation Rate', document.getElementById('inflation').value + ' %');
+      
+      // Add result values
+      addSectionHeader('Buying Scenario Results');
+      addRow('Financed Amount', document.getElementById('financedAmount').textContent);
+      addRow('Monthly Mortgage Payment', document.getElementById('monthlyPayment').textContent);
+      addRow('Annual Housing Expenses', document.getElementById('yearlyHousingExpenses').textContent);
+      addRow('Total Monthly Housing Expenses', document.getElementById('totalMonthlyHousingExpenses').textContent);
+      addRow('Total Mortgage Paid', document.getElementById('totalMortgagePaid').textContent);
+      addRow('Total Housing Expenses', document.getElementById('totalHousingExpenses').textContent);
+      addRow('House Future Value', document.getElementById('houseFutureValue').textContent);
+      addRow('Total Housing Expenditure', document.getElementById('totalHousingExpenditure').textContent);
+      addRow('Net Result After Stay Period', document.getElementById('buyingNetWorth').textContent);
+      
+      // Add optional buying savings if visible
+      if (document.getElementById('buyingSavingsSection').style.display !== 'none') {
+        addRow('Monthly Savings (Rent - Buying)', document.getElementById('buyingMonthlySavings').textContent);
+        addRow('Future Value of Monthly Savings', document.getElementById('buyingSavingsFutureValue').textContent);
+      }
+      
+      addSectionHeader('Renting Scenario Results');
+      addRow('Initial Monthly Rent', document.getElementById('initialRent').textContent);
+      addRow('Total Rent Deposits', document.getElementById('totalRentDeposits').textContent);
+      addRow('Final Monthly Rent', document.getElementById('finalRent').textContent);
+      addRow('Total Rent Paid', document.getElementById('totalRentPaid').textContent);
+      addRow('Future Value of Initial Investment', document.getElementById('rentingInvestmentValue').textContent);
+      addRow('Net Result After Stay Period', document.getElementById('rentingNetWorth').textContent);
+      
+      // Add optional renting savings if visible
+      if (document.getElementById('rentingSavingsSection').style.display !== 'none') {
+        addRow('Monthly Savings (Buying - Rent)', document.getElementById('rentingMonthlySavings').textContent);
+        addRow('Future Value of Monthly Savings', document.getElementById('rentingSavingsFutureValue').textContent);
+      }
+      
+      addSectionHeader('Comparison');
+      addRow('Final Comparison', document.getElementById('comparisonResult').textContent);
+      
+      // Add export to Excel button
+      const exportBtn = document.createElement('button');
+      exportBtn.className = 'export-excel-btn';
+      exportBtn.textContent = 'Export to Excel';
+      exportBtn.onclick = function() {
+        exportToExcel();
+      };
+      
+      // Assemble the modal
+      table.appendChild(tbody);
+      modalContent.appendChild(closeBtn);
+      modalContent.appendChild(title);
+      modalContent.appendChild(table);
+      modalContent.appendChild(exportBtn);
+      modal.appendChild(modalContent);
+      
+      // Add modal to the body
+      document.body.appendChild(modal);
+      
+      // Function to export data to Excel
+      function exportToExcel() {
+        let csvContent = "Parameter,Value\n";
+        
+        // Function to add a section to CSV
+        function addSectionToCSV(sectionName) {
+          csvContent += `"${sectionName}",""\n`;
+        }
+        
+        // Function to add a row to CSV
+        function addRowToCSV(label, value) {
+          csvContent += `"${label}","${value}"\n`;
+        }
+        
+        // Add all the same data to CSV
+        addSectionToCSV('Property Purchase Details');
+        addRowToCSV('House Price', document.getElementById('housePrice').value + ' €');
+        addRowToCSV('Down Payment', document.getElementById('downPayment').value + ' €');
+        addRowToCSV('Interest Rate', document.getElementById('interestRate').value + ' %');
+        addRowToCSV('Mortgage Length', document.getElementById('mortgageLength').value + ' months');
+        addRowToCSV('Home Appreciation Rate', document.getElementById('appreciationRate').value + ' %');
+        addRowToCSV('Buying Costs', document.getElementById('buyingCosts').value + ' €');
+        addRowToCSV('Selling Costs', document.getElementById('sellingCosts').value + ' %');
+        
+        addSectionToCSV('Ongoing Housing Expenses');
+        addRowToCSV('Maintenance & Renovation', document.getElementById('maintenanceCosts').value + ' %');
+        addRowToCSV('House Insurance', document.getElementById('houseInsurance').value + ' €/year');
+        addRowToCSV('Life Insurance', document.getElementById('lifeInsurance').value + ' €/year');
+        addRowToCSV('Building Administration Fees', document.getElementById('adminFees').value + ' €/month');
+        addRowToCSV('Property Taxes', document.getElementById('propertyTaxes').value + ' €/year');
+        
+        addSectionToCSV('Rental Details');
+        addRowToCSV('Monthly Rent', document.getElementById('rentPayment').value + ' €');
+        addRowToCSV('Number of Deposits', document.getElementById('rentDeposits').value + ' months');
+        addRowToCSV('Rent Increase Rate', document.getElementById('rentIncreaseRate').value + ' %');
+        
+        addSectionToCSV('General Parameters');
+        addRowToCSV('Stay Length', document.getElementById('stayLength').value + ' years');
+        addRowToCSV('Investment Return', document.getElementById('investmentReturn').value + ' %');
+        addRowToCSV('Inflation Rate', document.getElementById('inflation').value + ' %');
+        
+        addSectionToCSV('Buying Scenario Results');
+        addRowToCSV('Financed Amount', document.getElementById('financedAmount').textContent);
+        addRowToCSV('Monthly Mortgage Payment', document.getElementById('monthlyPayment').textContent);
+        addRowToCSV('Annual Housing Expenses', document.getElementById('yearlyHousingExpenses').textContent);
+        addRowToCSV('Total Monthly Housing Expenses', document.getElementById('totalMonthlyHousingExpenses').textContent);
+        addRowToCSV('Total Mortgage Paid', document.getElementById('totalMortgagePaid').textContent);
+        addRowToCSV('Total Housing Expenses', document.getElementById('totalHousingExpenses').textContent);
+        addRowToCSV('House Future Value', document.getElementById('houseFutureValue').textContent);
+        addRowToCSV('Total Housing Expenditure', document.getElementById('totalHousingExpenditure').textContent);
+        addRowToCSV('Net Result After Stay Period', document.getElementById('buyingNetWorth').textContent);
+        
+        if (document.getElementById('buyingSavingsSection').style.display !== 'none') {
+          addRowToCSV('Monthly Savings (Rent - Buying)', document.getElementById('buyingMonthlySavings').textContent);
+          addRowToCSV('Future Value of Monthly Savings', document.getElementById('buyingSavingsFutureValue').textContent);
+        }
+        
+        addSectionToCSV('Renting Scenario Results');
+        addRowToCSV('Initial Monthly Rent', document.getElementById('initialRent').textContent);
+        addRowToCSV('Total Rent Deposits', document.getElementById('totalRentDeposits').textContent);
+        addRowToCSV('Final Monthly Rent', document.getElementById('finalRent').textContent);
+        addRowToCSV('Total Rent Paid', document.getElementById('totalRentPaid').textContent);
+        addRowToCSV('Future Value of Initial Investment', document.getElementById('rentingInvestmentValue').textContent);
+        addRowToCSV('Net Result After Stay Period', document.getElementById('rentingNetWorth').textContent);
+        
+        if (document.getElementById('rentingSavingsSection').style.display !== 'none') {
+          addRowToCSV('Monthly Savings (Buying - Rent)', document.getElementById('rentingMonthlySavings').textContent);
+          addRowToCSV('Future Value of Monthly Savings', document.getElementById('rentingSavingsFutureValue').textContent);
+        }
+        
+        addSectionToCSV('Comparison');
+        addRowToCSV('Final Comparison', document.getElementById('comparisonResult').textContent);
+        
+        // Create a blob and download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'buy_vs_rent_results.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     });
   </script>
 </body>
