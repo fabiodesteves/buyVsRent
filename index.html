@@ -447,6 +447,42 @@
         </div>
       </div>
 
+      <!-- Net Results Over Time Table -->
+      <div class="results-table-container" style="display: none;">
+        <h3>Net Results Over Time
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">This table shows how the net financial position for buying and renting changes each year throughout the analysis period.</span>
+          </span>
+        </h3>
+        <div class="table-wrapper">
+          <table id="resultsTable" class="results-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Buying Net Result</th>
+                <th>Renting Net Result</th>
+                <th>Difference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Table rows will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Net Worth Chart -->
+      <div class="chart-container">
+        <h3>Net Result comparison
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">This chart visualizes how the net worth for buying and renting changes over time, helping you identify the crossover point where one option becomes better than the other.</span>
+          </span>
+        </h3>
+        <div class="chart-wrapper">
+          <canvas id="netWorthChart"></canvas>
+        </div>
+      </div>
+
       <div class="button-container">
         <button id="backToInputsBtn">Back to Inputs</button>
       </div>

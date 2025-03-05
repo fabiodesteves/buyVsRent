@@ -251,13 +251,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('Calculating net worth');
     // Calculate net worth for buying
-    // Simplify the remaining mortgage calculation by using totalMortgagePaid
     const remainingMortgage = financedAmount - totalMortgagePaid;
     
     // Revised buyingNetWorth calculation that properly accounts for all expenditures and remaining mortgage
     // The net worth is: Asset value (house) - Remaining mortgage - Selling costs - Initial investment (down payment + buying costs)
     // Plus any savings from lower monthly payments if buying is cheaper than renting
-    const buyingNetWorth = houseFutureValue - remainingMortgage - totalHousingExpenditure + (monthlySavings > 0 ? savingsValue : 0);
+    const buyingNetWorth = houseFutureValue - remainingMortgage - sellingCosts - (downPayment + buyingCosts) + (monthlySavings > 0 ? savingsValue : 0);
 
     // Calculate net worth for renting
     const rentingNetWorth = rentingInvestmentValue - totalRentPaid + totalRentDeposits + (monthlySavings < 0 ? savingsValue : 0);
@@ -311,6 +310,260 @@ document.addEventListener('DOMContentLoaded', function () {
       comparisonTextElement.textContent = `After ${stayLength} years, renting would leave you financially better off compared to buying this property, considering all costs and the potential investment returns.`;
     } else {
       comparisonTextElement.textContent = `After ${stayLength} years, buying and renting would result in the same financial outcome, considering all costs and potential returns.`;
+    }
+    
+    // Generate and populate the results table
+    generateResultsTable(
+      housePrice, downPayment, interestRate, mortgageLength, appreciationRate, 
+      buyingCosts, sellingCostsRate, maintenanceCostsRate, houseInsurance, 
+      lifeInsurance, adminFees, propertyTaxes, rentPayment, rentDeposits, 
+      rentIncreaseRate, stayLength, investmentReturn, inflation
+    );
+  }
+  
+  // Function to generate and populate the results table
+  function generateResultsTable(
+    housePrice, downPayment, interestRate, mortgageLength, appreciationRate, 
+    buyingCosts, sellingCostsRate, maintenanceCostsRate, houseInsurance, 
+    lifeInsurance, adminFees, propertyTaxes, rentPayment, rentDeposits, 
+    rentIncreaseRate, stayLength, investmentReturn, inflation
+  ) {
+    console.log('Generating results table');
+    
+    // Determine the number of years to show in the table
+    const mortgageLengthYears = Math.ceil(mortgageLength / 12);
+    const yearsToShow = stayLength;
+    
+    // Get the table body element
+    const tableBody = document.querySelector('#resultsTable tbody');
+    tableBody.innerHTML = ''; // Clear existing rows
+    
+    // Initial calculations
+    const financedAmount = housePrice - downPayment;
+    const monthlyPayment = calculateMonthlyPayment(financedAmount, interestRate, mortgageLength);
+    const annualMaintenanceCosts = housePrice * (maintenanceCostsRate / 100);
+    const yearlyHousingExpenses = annualMaintenanceCosts + houseInsurance + lifeInsurance + (adminFees * 12) + propertyTaxes;
+    const totalMonthlyHousingExpenses = monthlyPayment + (yearlyHousingExpenses / 12);
+    const initialInvestment = downPayment + buyingCosts;
+    const monthlySavings = rentPayment - totalMonthlyHousingExpenses;
+    
+    // Arrays to store data for the chart
+    const years = [];
+    const buyingNetWorthData = [];
+    const rentingNetWorthData = [];
+    
+    // Generate a row for each year
+    for (let year = 1; year <= yearsToShow; year++) {
+      // Calculate values for this year
+      const yearMonths = year * 12;
+      
+      // Buying calculations for this year
+      const houseFutureValue = calculateFutureValue(housePrice, appreciationRate, year);
+      const sellingCosts = houseFutureValue * (sellingCostsRate / 100);
+      const totalMortgagePaid = Math.min(yearMonths, mortgageLength) * monthlyPayment;
+      const remainingMortgage = financedAmount - totalMortgagePaid;
+      const totalHousingExpenses = calculateFutureValueAnnuity(yearlyHousingExpenses, inflation, year);
+      
+      // Renting calculations for this year
+      const finalRent = calculateFutureValue(rentPayment, rentIncreaseRate, year);
+      const totalRentPaid = calculateFutureValueAnnuity(rentPayment * 12, rentIncreaseRate, year);
+      const rentingInvestmentValue = calculateFutureValue(initialInvestment, investmentReturn, year);
+      
+      // Calculate savings values
+      let buyingSavingsValue = 0;
+      let rentingSavingsValue = 0;
+      
+      if (monthlySavings > 0) {
+        // Buying is cheaper monthly
+        buyingSavingsValue = calculateFutureValueAnnuity(monthlySavings * 12, investmentReturn, year);
+      } else if (monthlySavings < 0) {
+        // Renting is cheaper monthly
+        rentingSavingsValue = calculateFutureValueAnnuity(Math.abs(monthlySavings) * 12, investmentReturn, year);
+      }
+      
+      // Calculate net worth for this year
+      const buyingNetWorth = houseFutureValue - remainingMortgage - sellingCosts - initialInvestment + buyingSavingsValue;
+      const rentingNetWorth = rentingInvestmentValue - totalRentPaid + (rentPayment * rentDeposits) + rentingSavingsValue;
+      const difference = buyingNetWorth - rentingNetWorth;
+      
+      // Store data for the chart
+      years.push(year);
+      buyingNetWorthData.push(buyingNetWorth);
+      rentingNetWorthData.push(rentingNetWorth);
+      
+      // Create a new row
+      const row = document.createElement('tr');
+      
+      // Create and append cells
+      const yearCell = document.createElement('td');
+      yearCell.textContent = year;
+      row.appendChild(yearCell);
+      
+      const buyingCell = document.createElement('td');
+      buyingCell.textContent = formatCurrency(buyingNetWorth);
+      buyingCell.className = buyingNetWorth >= 0 ? 'positive-value' : 'negative-value';
+      row.appendChild(buyingCell);
+      
+      const rentingCell = document.createElement('td');
+      rentingCell.textContent = formatCurrency(rentingNetWorth);
+      rentingCell.className = rentingNetWorth >= 0 ? 'positive-value' : 'negative-value';
+      row.appendChild(rentingCell);
+      
+      const differenceCell = document.createElement('td');
+      differenceCell.textContent = formatCurrency(difference);
+      differenceCell.className = difference >= 0 ? 'positive-diff' : 'negative-diff';
+      row.appendChild(differenceCell);
+      
+      // Append the row to the table
+      tableBody.appendChild(row);
+    }
+    
+    // Create the chart
+    createNetWorthChart(years, buyingNetWorthData, rentingNetWorthData);
+  }
+  
+  // Function to create the net worth chart
+  function createNetWorthChart(years, buyingData, rentingData) {
+    console.log('Creating net worth chart');
+    
+    try {
+      // Get the chart canvas
+      const chartCanvas = document.getElementById('netWorthChart');
+      if (!chartCanvas) {
+        console.error('Chart canvas element not found');
+        return;
+      }
+      
+      // Properly destroy existing chart instance if it exists
+      if (window.netWorthChart instanceof Chart) {
+        window.netWorthChart.destroy();
+      } else if (window.netWorthChart) {
+        // If it exists but isn't a Chart instance, remove it
+        window.netWorthChart = null;
+      }
+      
+      // Calculate min and max values for y-axis
+      const allValues = [...buyingData, ...rentingData];
+      const minValue = Math.min(...allValues);
+      const maxValue = Math.max(...allValues);
+      
+      // Round min and max to nearest 50,000 for cleaner scale
+      const roundedMin = Math.floor(minValue / 50000) * 50000;
+      const roundedMax = Math.ceil(maxValue / 50000) * 50000;
+      
+      // Create the chart
+      window.netWorthChart = new Chart(chartCanvas, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            {
+              label: 'Buying Net Worth',
+              data: buyingData,
+              borderColor: '#34a853', // Google green
+              backgroundColor: 'rgba(52, 168, 83, 0.1)',
+              borderWidth: 2,
+              pointRadius: 3,
+              pointHoverRadius: 5,
+              fill: true,
+              tension: 0.1
+            },
+            {
+              label: 'Renting Net Worth',
+              data: rentingData,
+              borderColor: '#4285f4', // Google blue
+              backgroundColor: 'rgba(66, 133, 244, 0.1)',
+              borderWidth: 2,
+              pointRadius: 3,
+              pointHoverRadius: 5,
+              fill: true,
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                    label += formatCurrency(context.parsed.y);
+                  }
+                  return label;
+                }
+              }
+            },
+            legend: {
+              position: 'top',
+              labels: {
+                font: {
+                  family: "'Google Sans', sans-serif",
+                  size: 14
+                }
+              }
+            },
+            title: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Years',
+                font: {
+                  family: "'Google Sans', sans-serif",
+                  size: 14
+                }
+              },
+              ticks: {
+                font: {
+                  family: "'Roboto', sans-serif",
+                  size: 12
+                }
+              }
+            },
+            y: {
+              min: roundedMin,
+              max: roundedMax,
+              grace: '5%',
+              title: {
+                display: true,
+                text: 'Net Worth (€)',
+                font: {
+                  family: "'Google Sans', sans-serif",
+                  size: 14
+                }
+              },
+              ticks: {
+                font: {
+                  family: "'Roboto', sans-serif",
+                  size: 12
+                },
+                callback: function(value) {
+                  return formatCurrency(value);
+                }
+              }
+            }
+          },
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error creating chart:', error);
+      // Continue execution even if chart creation fails
     }
   }
 }); 
